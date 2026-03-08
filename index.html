@@ -1,1401 +1,1224 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>💣 Química Bajo Amenaza</title>
-<!-- Tailwind CSS (Play CDN - supports arbitrary values) -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- React 18 -->
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<!-- Babel for JSX -->
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<style>
-html,body{margin:0;padding:0;width:100%;min-height:100vh;overflow-x:hidden;background:#0a0015}
-#root{min-height:100vh}
-/* Tailwind config for Bangers font */
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap');
-</style>
-<!-- ResponsiveVoice: consistent TTS in ALL browsers -->
-<script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Día Sofi 💖</title>
+    <style>
+        :root {
+            --color-pink: #ff69b4;
+            --color-light-pink: #ffb6d9;
+            --color-dark-pink: #ff1493;
+            --color-purple: #da70d6;
+            --color-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heart-container {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .heart-container:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .heart {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            10% { transform: scale(1.1); }
+            20% { transform: scale(1); }
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 160px;
+            background: var(--color-pink);
+            border-radius: 100px 100px 0 0;
+        }
+
+        .heart::before {
+            left: 100px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .heart::after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        .zoom-sequence {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            z-index: 100;
+        }
+
+        .zoom-heart {
+            animation: zoomInfinite 3s ease-in-out forwards;
+        }
+
+        @keyframes zoomInfinite {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(5); opacity: 0.8; }
+            100% { transform: scale(100); opacity: 0; }
+        }
+
+        .message-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+            z-index: 200;
+            padding: 20px;
+        }
+
+        .game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            z-index: 300;
+            padding: 20px;
+        }
+
+        .game-title {
+            font-size: 2.5rem;
+            color: var(--color-dark-pink);
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .game-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+
+        .game-content .next-button {
+            min-width: 150px;
+        }
+
+        .next-button {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            background: var(--color-pink);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .next-button:hover {
+            background: var(--color-dark-pink);
+            transform: scale(1.1);
+        }
+
+        .floating-emoji {
+            position: fixed;
+            font-size: 50px;
+            pointer-events: none;
+            animation: floatEmoji 3s ease-out forwards;
+            z-index: 400;
+        }
+
+        @keyframes floatEmoji {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-300px) rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .game-board {
+                grid-template-columns: repeat(3, 90px);
+                grid-template-rows: repeat(3, 90px);
+                gap: 10px;
+            }
+            .emoji-card {
+                font-size: 3rem;
+            }
+            .game-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        .message {
+            font-size: 3rem;
+            color: var(--color-dark-pink);
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            animation: fadeInScale 1s ease-out;
+            margin-bottom: 30px;
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            color: var(--color-purple);
+            text-align: center;
+            animation: fadeIn 2s ease-out 0.5s both;
+            margin-bottom: 40px;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .cat-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            animation: fadeIn 2s ease-out 1s both;
+        }
+
+        .cat-gif {
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
+            border: 5px solid var(--color-white);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            object-fit: cover;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .cat-gif:hover {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .spinning-cat {
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--color-light-pink);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particle-float 3s ease-out forwards;
+        }
+
+        @keyframes particle-float {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-200px) scale(0); }
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .mini-heart {
+            position: absolute;
+            font-size: 30px;
+            animation: floatUp 5s ease-in infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% { 
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% { 
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+
+        .start-text {
+            position: absolute;
+            bottom: 50px;
+            font-size: 1.5rem;
+            color: var(--color-white);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        .escape-text {
+            position: fixed;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--color-white);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            pointer-events: none;
+            z-index: 150;
+            animation: fadeOut 1s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.5); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px) rotate(-5deg); }
+            75% { transform: translateX(10px) rotate(5deg); }
+        }
+
+        .catch-me {
+            animation: bounce 0.5s ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--color-pink);
+            position: absolute;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { 
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .hint-box {
+            background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,165,0,0.3));
+            padding: 30px;
+            border-radius: 20px;
+            border: 4px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+            margin: 30px auto;
+            max-width: 800px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hint-title {
+            font-size: 2.5rem;
+            color: #ffd700;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,215,0,1), 0 0 30px rgba(255,215,0,0.8);
+        }
+
+        .hint-text {
+            font-size: 2rem;
+            color: #ffffff;
+            text-align: center;
+            line-height: 1.6;
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(255,215,0,0.8);
+        }
+
+        .hint-detail {
+            font-size: 1.6rem;
+            color: #ffeb3b;
+            text-align: center;
+            line-height: 1.5;
+            margin-top: 20px;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 500px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .slideshow-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slideshow-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            background: rgba(255,255,255,0.3);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            color: white;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .slideshow-button:hover {
+            background: rgba(255,255,255,0.5);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .slideshow-button.prev {
+            left: 20px;
+        }
+
+        .slideshow-button.next {
+            right: 20px;
+        }
+
+        .photo-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .message {
+                font-size: 1.8rem;
+            }
+            .subtitle {
+                font-size: 1.3rem;
+            }
+            .cat-gif {
+                width: 100px;
+                height: 100px;
+            }
+            .game-title {
+                font-size: 1.6rem;
+            }
+            .next-button {
+                font-size: 1.2rem;
+                padding: 12px 30px;
+            }
+            .start-text {
+                font-size: 1.2rem;
+                bottom: 30px;
+            }
+            .hint-title {
+                font-size: 1.8rem;
+            }
+            .hint-text {
+                font-size: 1.4rem;
+            }
+            .hint-detail {
+                font-size: 1.2rem;
+            }
+            .slideshow-container {
+                height: 350px;
+            }
+            .slideshow-button {
+                font-size: 2rem;
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        @media (max-width: 414px) and (max-height: 896px) {
+            .message {
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+            }
+            .next-button {
+                font-size: 1.3rem;
+                padding: 12px 30px;
+            }
+            .escape-text {
+                font-size: 2rem;
+            }
+            .hint-title {
+                font-size: 1.5rem;
+            }
+            .hint-text {
+                font-size: 1.2rem;
+            }
+            .hint-detail {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useRef, useCallback } = React;
+    <div class="floating-hearts" id="floatingHearts"></div>
 
-
-/* ════════════════════════════════════════════════════════════════
-   GLOBAL STYLES — injected into <head>
-════════════════════════════════════════════════════════════════ */
-const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap');
-*{box-sizing:border-box;margin:0;padding:0}
-body{overflow-x:hidden;font-family:'Nunito',sans-serif}
-.bangers{font-family:'Bangers',cursive;letter-spacing:2px}
-
-/* ── BACKGROUNDS per level ── */
-.bg-intro{background:linear-gradient(180deg,#0a0015 0%,#1a0040 35%,#3b0764 60%,#7c2d12 80%,#f97316 95%,#fde68a 100%)}
-.bg-lab{background:linear-gradient(180deg,#0c4a6e 0%,#0369a1 40%,#0ea5e9 70%,#e0f2fe 100%)}
-.bg-city{background:linear-gradient(180deg,#1c0533 0%,#450a0a 40%,#7f1d1d 70%,#dc2626 90%,#fca5a5 100%)}
-.bg-jungle{background:linear-gradient(180deg,#052e16 0%,#14532d 40%,#166534 70%,#4ade80 100%)}
-.bg-space{background:linear-gradient(180deg,#000 0%,#0f0c29 40%,#302b63 70%,#24243e 100%)}
-.bg-volcano{background:linear-gradient(180deg,#1c0000 0%,#7f1d1d 30%,#dc2626 60%,#f97316 80%,#fbbf24 100%)}
-.bg-victory{background:linear-gradient(180deg,#052e16 0%,#166534 40%,#16a34a 70%,#fde68a 100%)}
-
-/* ── KEYFRAMES ── */
-@keyframes cloudL{0%{transform:translateX(-120vw)}100%{transform:translateX(110vw)}}
-@keyframes cloudR{0%{transform:translateX(110vw)}100%{transform:translateX(-120vw)}}
-@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@keyframes shake{0%,100%{transform:translate(0)}15%{transform:translate(-14px,4px)}30%{transform:translate(14px,-4px)}45%{transform:translate(-10px,2px)}60%{transform:translate(10px,-2px)}75%{transform:translate(-6px,1px)}90%{transform:translate(6px,-1px)}}
-@keyframes popIn{0%{transform:scale(0) rotate(-12deg);opacity:0}65%{transform:scale(1.1) rotate(3deg)}100%{transform:scale(1) rotate(0);opacity:1}}
-@keyframes slideL{from{transform:translateX(-130%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes slideR{from{transform:translateX(130%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes slideOutL{from{transform:translateX(0);opacity:1}to{transform:translateX(-150%);opacity:0}}
-@keyframes slideOutR{from{transform:translateX(0);opacity:1}to{transform:translateX(150%);opacity:0}}
-@keyframes runR{from{transform:translateX(0) scaleX(1)}to{transform:translateX(180vw) scaleX(1)}}
-@keyframes typeIt{from{width:0}to{width:100%}}
-@keyframes blink{50%{opacity:0}}
-@keyframes heartbeat{0%,100%{transform:scale(1)}14%{transform:scale(1.35)}28%{transform:scale(1)}42%{transform:scale(1.35)}70%{transform:scale(1)}}
-@keyframes tickRed{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.8)}50%{box-shadow:0 0 0 18px rgba(239,68,68,0)}}
-@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-9deg)}75%{transform:rotate(9deg)}}
-@keyframes confettiDrop{to{transform:translateY(110vh) rotate(900deg);opacity:0}}
-@keyframes neon{0%,100%{text-shadow:0 0 8px #0ff,0 0 20px #0ff,0 0 40px #0ff}50%{text-shadow:0 0 20px #0ff,0 0 50px #0ff,0 0 80px #0ff,0 0 100px #0ff}}
-@keyframes doorOpen{0%{transform:perspective(700px) rotateY(0deg)}100%{transform:perspective(700px) rotateY(-105deg)}}
-@keyframes starSpin{to{transform:rotate(360deg)}}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes fadeOut{from{opacity:1}to{opacity:0}}
-@keyframes glitch{0%,100%{clip-path:inset(0 0 98% 0)}20%{clip-path:inset(33% 0 33% 0)}40%{clip-path:inset(66% 0 0 0)}60%{clip-path:inset(0 0 66% 0)}80%{clip-path:inset(50% 0 0 0)}}
-@keyframes redFlash{0%,100%{background:transparent}50%{background:rgba(185,28,28,.55)}}
-@keyframes greenFlash{0%,100%{background:transparent}50%{background:rgba(21,128,61,.45)}}
-@keyframes explosionGrow{0%{transform:scale(0);opacity:1}80%{opacity:.7}100%{transform:scale(4);opacity:0}}
-@keyframes scanline{0%{top:-100%}100%{top:100%}}
-@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-
-.cloud-l{animation:cloudL 22s linear infinite}
-.cloud-l2{animation:cloudL 34s linear infinite;animation-delay:-14s}
-.cloud-r{animation:cloudR 28s linear infinite;animation-delay:-7s}
-.float{animation:floatY 3s ease-in-out infinite}
-.wiggle{animation:wiggle .45s ease-in-out infinite}
-.heartbeat-anim{animation:heartbeat 1.4s ease infinite}
-.pop-in{animation:popIn .55s cubic-bezier(.34,1.56,.64,1) forwards}
-.slide-l{animation:slideL .5s cubic-bezier(.34,1.4,.64,1) forwards}
-.slide-r{animation:slideR .5s cubic-bezier(.34,1.4,.64,1) forwards}
-.slide-out-l{animation:slideOutL .45s ease-in forwards}
-.slide-out-r{animation:slideOutR .45s ease-in forwards}
-.run-r{animation:runR .9s ease-in forwards}
-.shake-fx{animation:shake .55s ease}
-.breathe{animation:breathe 3s ease-in-out infinite}
-.door-open{animation:doorOpen .85s ease-in-out forwards;transform-origin:left center}
-.neon-text{animation:neon 2s ease-in-out infinite}
-.star-spin{animation:starSpin 4s linear infinite}
-.fadeIn{animation:fadeIn .4s ease forwards}
-.fadeOut{animation:fadeOut .4s ease forwards}
-
-/* ── COMIC BORDERS ── */
-.comic{border:4px solid #1e1b4b;box-shadow:6px 6px 0 #1e1b4b}
-.comic-danger{border:4px solid #7f1d1d;box-shadow:6px 6px 0 #7f1d1d}
-.comic-gold{border:4px solid #92400e;box-shadow:6px 6px 0 #92400e}
-.comic-green{border:4px solid #14532d;box-shadow:6px 6px 0 #14532d}
-
-/* ── SPEECH TAILS ── */
-.tail-l::before{content:'';position:absolute;left:-22px;top:22px;border:11px solid transparent;border-right-color:inherit}
-.tail-r::before{content:'';position:absolute;right:-22px;top:22px;border:11px solid transparent;border-left-color:inherit}
-
-/* ── BUTTONS ── */
-.btn-danger{background:linear-gradient(135deg,#dc2626,#991b1b);border:4px solid #7f1d1d;box-shadow:0 8px 0 #450a0a,0 0 30px rgba(220,38,38,.35);transition:all .1s;cursor:pointer}
-.btn-danger:hover{transform:translateY(4px);box-shadow:0 4px 0 #450a0a}
-.btn-danger:active{transform:translateY(8px);box-shadow:0 0px 0 #450a0a}
-.btn-go{background:linear-gradient(135deg,#16a34a,#15803d);border:4px solid #14532d;box-shadow:0 8px 0 #052e16,0 0 30px rgba(22,163,74,.35);transition:all .1s;cursor:pointer}
-.btn-go:hover{transform:translateY(4px);box-shadow:0 4px 0 #052e16}
-.btn-go:active{transform:translateY(8px);box-shadow:0 0 0 #052e16}
-.btn-option{background:linear-gradient(135deg,#1e40af,#1d4ed8);border:3px solid #3b82f6;box-shadow:0 5px 0 #1e3a8a;transition:all .12s;cursor:pointer}
-.btn-option:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 8px 0 #1e3a8a}
-.btn-option:active:not(:disabled){transform:translateY(3px);box-shadow:0 2px 0 #1e3a8a}
-.btn-option.correct{background:linear-gradient(135deg,#15803d,#166534)!important;border-color:#4ade80!important;box-shadow:0 5px 0 #052e16!important}
-.btn-option.wrong{background:linear-gradient(135deg,#991b1b,#7f1d1d)!important;border-color:#f87171!important;box-shadow:0 5px 0 #450a0a!important}
-.btn-option.selected{background:linear-gradient(135deg,#6d28d9,#5b21b6)!important;border-color:#a78bfa!important}
-.btn-option:disabled{cursor:not-allowed;opacity:.7}
-
-/* ── ITEMS drag/drop ── */
-.item-chip{display:inline-flex;align-items:center;padding:6px 14px;border-radius:12px;font-weight:700;font-size:14px;border:2px solid;cursor:pointer;transition:all .15s;user-select:none}
-.item-chip:hover{transform:scale(1.07)}
-.item-chip.active{transform:scale(1.12);box-shadow:0 0 0 3px #fbbf24}
-
-/* ── HEART ── */
-.heart-icon{display:inline-block;font-size:28px;transition:all .3s}
-.heart-icon.lost{opacity:.25;filter:grayscale(1)}
-
-/* ── INPUT field ── */
-.sci-input{background:#0f172a;border:3px solid #3b82f6;border-radius:14px;color:#fff;font-size:18px;font-weight:700;text-align:center;padding:10px 16px;outline:none;width:130px;transition:border-color .2s}
-.sci-input:focus{border-color:#fbbf24}
-.sci-input.correct{border-color:#4ade80;background:#052e16}
-.sci-input.wrong{border-color:#f87171;background:#450a0a}
-
-/* ── PROGRESS ── */
-.prog-bar{height:18px;border-radius:9px;background:#1e3a5f;border:3px solid #1d4ed8;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,#06b6d4,#6366f1);border-radius:7px;transition:width .6s ease}
-
-/* ── DOOR ── */
-.door-wrap{position:relative;width:110px;height:170px;flex-shrink:0}
-.door-frame{position:absolute;inset:0;border-radius:12px 12px 0 0;background:#292524;border:5px solid #57534e;box-shadow:inset 0 0 20px rgba(0,0,0,.6)}
-.door-panel{position:absolute;inset:5px;border-radius:8px 8px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-
-/* ── BOMB ── */
-.bomb-tick{animation:tickRed 1s ease-in-out infinite}
-.bomb-fast{animation:tickRed .3s ease-in-out infinite}
-
-/* ── SCANLINE CRT effect ── */
-.scanlines::after{content:'';position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 4px);z-index:9999}
-
-sub{font-size:.68em;line-height:0}
-sup{font-size:.68em;line-height:0}
-`;
-
-/* ════════════════════════════════════════════════════════════════
-   SCIENTIFIC TEXT  — regex-based formula renderer
-════════════════════════════════════════════════════════════════ */
-const Sci = ({ t = "", cls = "" }) => {
-  if (!t) return null;
-  const parts = [];
-  let i = 0, buf = "";
-  while (i < t.length) {
-    // digits after letter/closing bracket → subscript, unless followed by + or -
-    if (/\d/.test(t[i]) && i > 0 && /[A-Za-z)\]]/.test(t[i - 1])) {
-      let d = "";
-      while (i < t.length && /\d/.test(t[i])) { d += t[i++]; }
-      if (i < t.length && /[+-]/.test(t[i])) {
-        const s = t[i++];
-        if (buf) { parts.push(<span key={parts.length}>{buf}</span>); buf = ""; }
-        parts.push(<sup key={parts.length}>{d}{s}</sup>);
-      } else {
-        if (buf) { parts.push(<span key={parts.length}>{buf}</span>); buf = ""; }
-        parts.push(<sub key={parts.length}>{d}</sub>);
-      }
-      continue;
-    }
-    // lone charge after letter/digit
-    if (/[+-]/.test(t[i]) && i > 0 && /[A-Za-z\d]/.test(t[i - 1])) {
-      const s = t[i++];
-      if (buf) { parts.push(<span key={parts.length}>{buf}</span>); buf = ""; }
-      parts.push(<sup key={parts.length}>{s}</sup>);
-      continue;
-    }
-    buf += t[i++];
-  }
-  if (buf) parts.push(<span key={parts.length}>{buf}</span>);
-  return <span className={cls} style={{ fontFamily: "'Georgia',serif" }}>{parts}</span>;
-};
-
-/* ════════════════════════════════════════════════════════════════
-   AUDIO ENGINE — Web Audio API spatial effects
-════════════════════════════════════════════════════════════════ */
-let _ac = null;
-const getAC = () => {
-  if (!_ac) {
-    try { _ac = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-  }
-  if (_ac && _ac.state === 'suspended') _ac.resume().catch(()=>{});
-  return _ac;
-};
-
-const playTone = (freq, dur, vol=0.3, type='sine', delay=0) => {
-  const ac = getAC(); if(!ac) return;
-  try {
-    const osc = ac.createOscillator();
-    const gain = ac.createGain();
-    osc.connect(gain); gain.connect(ac.destination);
-    osc.type = type; osc.frequency.value = freq;
-    const t = ac.currentTime + delay;
-    gain.gain.setValueAtTime(0.001, t);
-    gain.gain.linearRampToValueAtTime(vol, t+0.01);
-    gain.gain.exponentialRampToValueAtTime(0.001, t+dur);
-    osc.start(t); osc.stop(t+dur+0.05);
-  } catch(e){}
-};
-
-const playNoise = (dur, vol=0.3, freq=600, q=5) => {
-  const ac = getAC(); if(!ac) return;
-  try {
-    const bufSize = Math.floor(ac.sampleRate * dur);
-    const buf = ac.createBuffer(1, bufSize, ac.sampleRate);
-    const data = buf.getChannelData(0);
-    for(let i=0;i<bufSize;i++) data[i]=(Math.random()*2-1)*Math.pow(1-i/bufSize,0.4);
-    const src = ac.createBufferSource(); src.buffer = buf;
-    const filt = ac.createBiquadFilter(); filt.type='bandpass';
-    filt.frequency.value=freq; filt.Q.value=q;
-    const gain = ac.createGain(); gain.gain.value=vol;
-    src.connect(filt); filt.connect(gain); gain.connect(ac.destination);
-    src.start();
-  } catch(e){}
-};
-
-const playSFX = {
-  tick:       ()=>{ playTone(880, 0.06, 0.22, 'square'); },
-  fastTick:   ()=>{ playTone(1200, 0.04, 0.28, 'square'); },
-  whoosh:     ()=>{ playNoise(0.25, 0.18, 900, 3); },
-  success:    ()=>{ [523,659,784,1047].forEach((f,i)=>playTone(f,0.22,0.38,'sine',i*0.09)); setTimeout(()=>playTone(1568,0.5,0.3,'sine'),480); },
-  fail:       ()=>{ [280,230,170].forEach((f,i)=>playTone(f,0.18,0.4,'sawtooth',i*0.08)); },
-  explosion:  ()=>{ playNoise(1.6,0.7,160,1); playNoise(0.7,0.5,80,0.5); [200,150,100].forEach((f,i)=>playTone(f,0.4,0.3,'sawtooth',i*0.05)); },
-  doorOpen:   ()=>{ [220,277,330,440].forEach((f,i)=>playTone(f,0.3,0.22,'sine',i*0.06)); },
-  click:      ()=>{ playTone(660, 0.04, 0.15, 'sine'); },
-  missionStart:()=>{ [220,330,440,550,660,880].forEach((f,i)=>playTone(f,0.3,0.32,'triangle',i*0.07)); },
-};
-const playBombPlant = ()=>{ playNoise(0.4,0.5,180,2); playTone(110,0.7,0.4,'sawtooth'); };
-
-/* ════════════════════════════════════════════════════════════════
-   WEB SPEECH API — Character Voices
-════════════════════════════════════════════════════════════════ */
-/* ── Dug happy bark stinger ── */
-const dugBark = () => {
-  [520, 680, 580].forEach((f, i) => playTone(f, 0.06, 0.18, 'sine', i * 0.055));
-  playNoise(0.04, 0.08, 800, 8);
-};
-
-/* ── Michi evil laugh stinger ── */
-const michiLaugh = () => {
-  [400, 350, 300, 260, 220].forEach((f, i) => playTone(f, 0.1, 0.22, 'sawtooth', i * 0.07));
-  playNoise(0.3, 0.12, 220, 4);
-};
-
-/* ════════════════════════════════════════════════════════════════
-   SPEAK — ResponsiveVoice (funciona en TODOS los navegadores)
-   Dug  → Spanish Female, tono agudo y alegre
-   Michi → Spanish Male,  tono grave y lento
-════════════════════════════════════════════════════════════════ */
-const speak = (text, isMichi = false) => {
-  // Play character sound stinger first
-  if (isMichi) michiLaugh(); else dugBark();
-
-  const delay = isMichi ? 280 : 130;
-  setTimeout(() => {
-    // Cancel any ongoing speech
-    if (window.responsiveVoice) {
-      window.responsiveVoice.cancel();
-      if (isMichi) {
-        // 😼 Michimalvado — grave, lento, amenazante
-        window.responsiveVoice.speak(text, "Spanish Male", {
-          pitch: 0.1,   // muy grave
-          rate:  0.72,  // lento y dramático
-          volume: 1.0,
-        });
-      } else {
-        // 🐕 Dug — agudo, rápido, entusiasta
-        window.responsiveVoice.speak(text, "Spanish Female", {
-          pitch: 1.8,   // muy agudo y alegre
-          rate:  1.2,   // rápido y emocionado
-          volume: 0.95,
-        });
-      }
-    } else if (window.speechSynthesis) {
-      // Fallback: Web Speech API nativo
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "es-ES";
-      u.rate   = isMichi ? 0.72 : 1.25;
-      u.pitch  = isMichi ? 0.1  : 1.8;
-      u.volume = isMichi ? 1.0  : 0.95;
-      window.speechSynthesis.speak(u);
-    }
-  }, delay);
-};
-/* ════════════════════════════════════════════════════════════════
-   SVG CHARACTER ART
-════════════════════════════════════════════════════════════════ */
-// General Michimalvado — evil cat with eye-patch and monocle
-const MichiSVG = ({ mood = "normal", w = 160, anim = "" }) => {
-  const eyes = {
-    normal:  [<circle key="e1" cx="68" cy="74" r="9" fill="#1a0030"/>, <ellipse key="e2" cx="100" cy="74" rx="7" ry="9" fill="#1a0030"/>],
-    laugh:   [<path key="e1" d="M58 70 Q68 80 78 70" stroke="#1a0030" strokeWidth="3" fill="none"/>, <path key="e2" d="M92 70 Q100 80 108 70" stroke="#1a0030" strokeWidth="3" fill="none"/>],
-    shocked: [<circle key="e1" cx="68" cy="74" r="13" fill="#1a0030"/>, <circle key="e2" cx="100" cy="74" r="13" fill="#1a0030"/>, <circle key="h1" cx="73" cy="70" r="3" fill="#fff"/>, <circle key="h2" cx="105" cy="70" r="3" fill="#fff"/>],
-    angry:   [<path key="e1" d="M57 66 L79 72 L57 76" fill="#1a0030"/>, <path key="e2" d="M89 66 L111 72 L89 76" fill="#1a0030"/>],
-  };
-  const mouths = {
-    normal:  <path d="M72 100 Q85 108 100 100" stroke="#4a1942" strokeWidth="3" fill="none"/>,
-    laugh:   <path d="M66 98 Q85 120 106 98" fill="#4a1942"/>,
-    shocked: <ellipse cx="85" cy="108" rx="12" ry="16" fill="#4a1942"/>,
-    angry:   <path d="M66 106 Q85 94 106 106" stroke="#4a1942" strokeWidth="3" fill="none"/>,
-  };
-  return (
-    <svg viewBox="0 0 170 200" width={w} height={w*200/170} className={anim}>
-      {/* Body / coat */}
-      <ellipse cx="85" cy="165" rx="48" ry="35" fill="#2d1b69"/>
-      {/* Purple fur coat */}
-      <rect x="50" y="130" width="70" height="60" rx="16" fill="#4c1d95"/>
-      {/* Gold epaulettes */}
-      <ellipse cx="50" cy="135" rx="14" ry="8" fill="#fbbf24"/>
-      <ellipse cx="120" cy="135" rx="14" ry="8" fill="#fbbf24"/>
-      {/* Head */}
-      <ellipse cx="85" cy="78" rx="46" ry="44" fill="#a78bfa"/>
-      {/* Cheek fluff */}
-      <ellipse cx="43" cy="85" rx="16" ry="12" fill="#c4b5fd"/>
-      <ellipse cx="127" cy="85" rx="16" ry="12" fill="#c4b5fd"/>
-      {/* Ears */}
-      <polygon points="45,42 30,10 62,28" fill="#a78bfa"/>
-      <polygon points="48,44 34,18 60,32" fill="#fca5a5"/>
-      <polygon points="125,42 140,10 108,28" fill="#a78bfa"/>
-      <polygon points="122,44 136,18 110,32" fill="#fca5a5"/>
-      {/* Eye patch (left eye) */}
-      <rect x="52" y="62" width="28" height="22" rx="6" fill="#1a0030"/>
-      <line x1="52" y1="64" x2="38" y2="54" stroke="#1a0030" strokeWidth="3"/>
-      <line x1="80" y1="64" x2="93" y2="54" stroke="#1a0030" strokeWidth="3"/>
-      {/* Right eye */}
-      {eyes[mood]?.[1] || eyes.normal[1]}
-      {/* Monocle */}
-      <circle cx="100" cy="74" r="16" stroke="#fbbf24" strokeWidth="3" fill="none"/>
-      <line x1="116" y1="74" x2="124" y2="84" stroke="#fbbf24" strokeWidth="2"/>
-      {/* Nose */}
-      <ellipse cx="85" cy="91" rx="6" ry="4" fill="#6d28d9"/>
-      {/* Whiskers */}
-      <line x1="50" y1="90" x2="20" y2="84" stroke="#e2e8f0" strokeWidth="1.5"/>
-      <line x1="50" y1="94" x2="20" y2="94" stroke="#e2e8f0" strokeWidth="1.5"/>
-      <line x1="50" y1="98" x2="20" y2="102" stroke="#e2e8f0" strokeWidth="1.5"/>
-      <line x1="120" y1="90" x2="150" y2="84" stroke="#e2e8f0" strokeWidth="1.5"/>
-      <line x1="120" y1="94" x2="150" y2="94" stroke="#e2e8f0" strokeWidth="1.5"/>
-      <line x1="120" y1="98" x2="150" y2="102" stroke="#e2e8f0" strokeWidth="1.5"/>
-      {/* Mouth */}
-      {mouths[mood] || mouths.normal}
-      {/* Top hat */}
-      <rect x="55" y="22" width="60" height="38" rx="4" fill="#0f0c29"/>
-      <rect x="42" y="56" width="86" height="10" rx="4" fill="#0f0c29"/>
-      <rect x="60" y="26" width="50" height="6" rx="2" fill="#fbbf24"/>
-      {/* Evil glow eyes highlight */}
-      <circle cx="100" cy="74" r="5" fill="#fbbf24" opacity={mood === "laugh" || mood === "angry" ? "0.9" : "0.5"}/>
-      {/* Tail */}
-      <path d="M133 170 Q160 150 155 130 Q150 118 140 125" stroke="#4c1d95" strokeWidth="10" fill="none" strokeLinecap="round"/>
-    </svg>
-  );
-};
-
-// Dug — Golden Retriever with lab coat & glasses
-const DugSVG = ({ mood = "normal", w = 160, anim = "" }) => {
-  const tails = {
-    normal:  <path d="M143 155 Q165 140 168 118 Q170 104 158 108" stroke="#d97706" strokeWidth="10" fill="none" strokeLinecap="round"/>,
-    excited: <path d="M143 155 Q175 130 172 105 Q169 85 155 90 Q170 100 168 118" stroke="#d97706" strokeWidth="10" fill="none" strokeLinecap="round" style={{animation:"wiggle .3s ease-in-out infinite"}}/>,
-    thinking:<path d="M143 155 Q160 145 158 128" stroke="#d97706" strokeWidth="10" fill="none" strokeLinecap="round"/>,
-  };
-  const eyebrows = {
-    normal:  null,
-    excited: <><path d="M58 58 Q68 50 78 58" stroke="#92400e" strokeWidth="3" fill="none"/><path d="M92 58 Q102 50 112 58" stroke="#92400e" strokeWidth="3" fill="none"/></>,
-    thinking:<><path d="M58 58 Q68 60 78 56" stroke="#92400e" strokeWidth="3" fill="none"/><path d="M92 56 Q102 60 112 58" stroke="#92400e" strokeWidth="3" fill="none"/></>,
-  };
-  return (
-    <svg viewBox="0 0 180 210" width={w} height={w*210/180} className={anim}>
-      {/* Lab coat body */}
-      <rect x="38" y="130" width="104" height="72" rx="20" fill="#f1f5f9"/>
-      <rect x="38" y="130" width="48" height="72" rx="10" fill="#e2e8f0"/>
-      {/* Coat collar */}
-      <path d="M70 130 L90 155 L110 130" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="2"/>
-      {/* Stethoscope */}
-      <path d="M65 145 Q55 160 60 175 Q65 185 75 180" stroke="#374151" strokeWidth="3" fill="none"/>
-      <circle cx="60" cy="176" r="6" fill="#374151"/>
-      {/* Golden body fur */}
-      <ellipse cx="90" cy="148" rx="46" ry="28" fill="#d97706"/>
-      {/* Head */}
-      <ellipse cx="90" cy="82" rx="48" ry="46" fill="#fbbf24"/>
-      {/* Cheek fluff */}
-      <ellipse cx="46" cy="95" rx="18" ry="14" fill="#f59e0b"/>
-      <ellipse cx="134" cy="95" rx="18" ry="14" fill="#f59e0b"/>
-      {/* Ear left */}
-      <ellipse cx="42" cy="80" rx="18" ry="30" fill="#d97706" transform="rotate(-18,42,80)"/>
-      {/* Ear right */}
-      <ellipse cx="138" cy="80" rx="18" ry="30" fill="#d97706" transform="rotate(18,138,80)"/>
-      {/* Snout */}
-      <ellipse cx="90" cy="102" rx="24" ry="18" fill="#f59e0b"/>
-      {/* Nose */}
-      <ellipse cx="90" cy="94" rx="10" ry="7" fill="#1c1917"/>
-      <ellipse cx="87" cy="92" rx="3" ry="2" fill="#44403c" opacity=".6"/>
-      {/* Mouth */}
-      {mood === "excited"
-        ? <path d="M72 110 Q90 126 108 110" fill="#92400e"/>
-        : <path d="M76 110 Q90 118 104 110" stroke="#92400e" strokeWidth="3" fill="none"/>}
-      {/* Tongue */}
-      {mood === "excited" && <ellipse cx="90" cy="120" rx="10" ry="8" fill="#f43f5e"/>}
-      {/* Glasses */}
-      <circle cx="68" cy="76" r="16" stroke="#374151" strokeWidth="3" fill="rgba(186,230,253,0.35)"/>
-      <circle cx="110" cy="76" r="16" stroke="#374151" strokeWidth="3" fill="rgba(186,230,253,0.35)"/>
-      <line x1="84" y1="76" x2="94" y2="76" stroke="#374151" strokeWidth="2.5"/>
-      <line x1="42" y1="72" x2="52" y2="76" stroke="#374151" strokeWidth="2.5"/>
-      <line x1="138" y1="72" x2="126" y2="76" stroke="#374151" strokeWidth="2.5"/>
-      {/* Eyes behind glasses */}
-      <circle cx="68" cy="76" r="7" fill="#1c1917"/>
-      <circle cx="110" cy="76" r="7" fill="#1c1917"/>
-      <circle cx="71" cy="73" r="2" fill="#fff"/>
-      <circle cx="113" cy="73" r="2" fill="#fff"/>
-      {/* Eyebrows */}
-      {eyebrows[mood] || eyebrows.normal}
-      {/* Tags/badge */}
-      <rect x="96" y="148" width="32" height="20" rx="4" fill="#fbbf24"/>
-      <text x="112" y="162" textAnchor="middle" fontSize="7" fontWeight="bold" fill="#1c1917">DUG⭐</text>
-      {/* Tail */}
-      {tails[mood] || tails.normal}
-    </svg>
-  );
-};
-
-/* ════════════════════════════════════════════════════════════════
-   CLOUD LAYER
-════════════════════════════════════════════════════════════════ */
-const Clouds = () => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{zIndex:1}}>
-    {[
-      {cls:"cloud-l",  top:"6%",  sz:100, op:.85},
-      {cls:"cloud-l2", top:"14%", sz:70,  op:.7},
-      {cls:"cloud-r",  top:"9%",  sz:120, op:.75},
-      {cls:"cloud-l",  top:"22%", sz:80,  op:.6, delay:"17s"},
-    ].map((c,i)=>(
-      <div key={i} className={c.cls} style={{position:"absolute",top:c.top,fontSize:c.sz,opacity:c.op,animationDelay:c.delay||"0s",lineHeight:1}}>☁️</div>
-    ))}
-  </div>
-);
-
-/* ════════════════════════════════════════════════════════════════
-   CITY SKYLINE
-════════════════════════════════════════════════════════════════ */
-const Skyline = () => (
-  <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{zIndex:2}}>
-    <svg viewBox="0 0 400 90" preserveAspectRatio="none" style={{width:"100%",height:"90px",display:"block"}}>
-      {[
-        {x:0,w:28,h:55},{x:30,w:22,h:70},{x:54,w:30,h:45},{x:86,w:20,h:80},{x:108,w:25,h:60},
-        {x:135,w:18,h:50},{x:155,w:32,h:85},{x:189,w:22,h:55},{x:213,w:26,h:70},{x:241,w:20,h:48},
-        {x:263,w:28,h:78},{x:293,w:22,h:55},{x:317,w:30,h:65},{x:349,w:24,h:45},{x:375,w:25,h:75},
-      ].map((b,i)=>(
-        <g key={i}>
-          <rect x={b.x} y={90-b.h} width={b.w} height={b.h} fill="#0f172a"/>
-          {/* windows */}
-          {Array.from({length:Math.floor(b.h/14)}).map((_,r)=>
-            Array.from({length:Math.floor(b.w/10)}).map((_,c)=>(
-              <rect key={`${r}-${c}`} x={b.x+3+c*9} y={90-b.h+6+r*13} width={5} height={7}
-                fill={Math.random()>.45?"#fbbf24":"#1e3a5f"} rx="1"/>
-            ))
-          )}
-        </g>
-      ))}
-    </svg>
-  </div>
-);
-
-/* ════════════════════════════════════════════════════════════════
-   SPEECH BUBBLE with typewriter
-════════════════════════════════════════════════════════════════ */
-const Bubble = ({ text, side="left", onDone, auto=false, speaker="", color="#fef9c3", border="#ca8a04" }) => {
-  const [disp, setDisp] = useState(""); const [done, setDone] = useState(false);
-  const idx = useRef(0); const iRef = useRef(null);
-  const isMichiVoice = speaker.toUpperCase().includes("MICHI");
-  useEffect(()=>{
-    setDisp(""); setDone(false); idx.current=0;
-    // Auto-speak when bubble appears
-    speak(text, isMichiVoice);
-    iRef.current = setInterval(()=>{
-      if(idx.current < text.length){ setDisp(text.slice(0,++idx.current)); }
-      else { setDone(true); clearInterval(iRef.current); if(auto) setTimeout(()=>onDone&&onDone(),1100); }
-    },22);
-    return ()=>{ clearInterval(iRef.current); };
-  },[text]);
-  const skip = ()=>{ if(!done){setDisp(text);setDone(true);clearInterval(iRef.current);} else onDone&&onDone(); };
-  const tailClass = side==="left"?"tail-l":"tail-r";
-  return (
-    <div onClick={skip} className={`relative cursor-pointer pop-in rounded-2xl p-4 max-w-xs ${tailClass}`}
-      style={{background:color,border:`3px solid ${border}`,boxShadow:`4px 4px 0 ${border}`,borderColor:border}}>
-      {speaker && <div className="text-xs font-bold mb-1 bangers" style={{color:border}}>{speaker}</div>}
-      <p className="text-gray-900 text-sm leading-relaxed" style={{fontFamily:"Nunito,sans-serif"}}>{disp}
-        <span style={{borderRight:`2px solid #555`,animation:done?"none":"blink .7s step-end infinite"}} className={done?"hidden":""}></span>
-      </p>
-      {done && <p className="text-right text-xs mt-1 bangers" style={{color:border}}>{auto?"...":"TAP para continuar ▶"}</p>}
-    </div>
-  );
-};
-
-/* ════════════════════════════════════════════════════════════════
-   HEARTS / LIVES
-════════════════════════════════════════════════════════════════ */
-const Hearts = ({ lives, max=3 }) => (
-  <div className="flex gap-1.5 items-center">
-    {Array.from({length:max}).map((_,i)=>(
-      <span key={i} className={`heart-icon ${i>=lives?"lost":""}`}
-        style={{animation: i<lives ? "heartbeat 1.4s ease infinite" : "none", animationDelay:`${i*0.2}s`}}>
-        ❤️
-      </span>
-    ))}
-  </div>
-);
-
-/* ════════════════════════════════════════════════════════════════
-   BOMB WIDGET
-════════════════════════════════════════════════════════════════ */
-const Bomb = ({ time=5, fast=false }) => (
-  <div className="flex flex-col items-center gap-1 select-none">
-    <div className={time<=2?"wiggle":"float"} style={{fontSize:52,lineHeight:1,filter:time<=2?"drop-shadow(0 0 18px red)":"none"}}>💣</div>
-    <div className={`bangers text-2xl px-4 py-1 rounded-xl border-2 ${time<=2?"bg-red-900 border-red-400 text-red-300":"bg-gray-900 border-yellow-500 text-yellow-300"}`}
-      style={{animation: fast?"tickRed .3s ease-in-out infinite":time<=2?"tickRed .6s ease-in-out infinite":"tickRed 1.4s ease-in-out infinite"}}
-    >
-      0{time}:00
-    </div>
-  </div>
-);
-
-/* ════════════════════════════════════════════════════════════════
-   LOCKED DOOR
-════════════════════════════════════════════════════════════════ */
-const Door = ({ color="#06b6d4", label="", open=false }) => (
-  <div className="door-wrap relative select-none">
-    <div className="door-frame absolute inset-0 rounded-t-2xl"/>
-    <div className={`door-panel absolute inset-[5px] rounded-t-xl flex flex-col items-center justify-center ${open?"door-open":""}`}
-      style={{background:`linear-gradient(135deg,${color}25,${color}10)`,border:`3px solid ${color}`,transformOrigin:"left center"}}>
-      {open ? <span style={{fontSize:36}}>✅</span> : <>
-        <span style={{fontSize:30}}>🔐</span>
-        <span className="bangers text-xs text-center mt-1 px-1" style={{color,lineHeight:1.2}}>{label}</span>
-      </>}
-    </div>
-  </div>
-);
-
-/* ════════════════════════════════════════════════════════════════
-   CONFETTI
-════════════════════════════════════════════════════════════════ */
-const Confetti = () => {
-  const pieces = Array.from({length:35},(_,i)=>({
-    x:Math.random()*100, c:["#fbbf24","#06b6d4","#f43f5e","#a3e635","#c084fc","#fb923c","#fff"][i%7],
-    delay:Math.random()*1.5, dur:2+Math.random()*2, sz:7+Math.random()*12, rot:Math.random()>0.5
-  }));
-  return <div className="fixed inset-0 pointer-events-none" style={{zIndex:300}}>
-    {pieces.map((p,i)=>(
-      <div key={i} style={{position:"absolute",left:p.x+"%",top:"-24px",width:p.sz,height:p.sz,
-        background:p.c, borderRadius:p.rot?"50%":"2px",
-        animation:`confettiDrop ${p.dur}s ${p.delay}s linear forwards`}}/>
-    ))}
-  </div>;
-};
-
-/* ════════════════════════════════════════════════════════════════
-   EXPLOSION
-════════════════════════════════════════════════════════════════ */
-const Explosion = () => (
-  <div className="fixed inset-0 pointer-events-none flex items-center justify-center" style={{zIndex:250}}>
-    <div style={{fontSize:120,animation:"explosionGrow 1s ease-out forwards"}}>💥</div>
-  </div>
-);
-
-/* ════════════════════════════════════════════════════════════════
-   GAME DATA — 5 levels from PPT content
-════════════════════════════════════════════════════════════════ */
-const LEVELS = [
-  {
-    id:1, doorLabel:"ELECTRO\nLÍTICA", color:"#06b6d4", bg:"bg-lab",
-    landscape:"🔬 Laboratorio Secreto",
-    dugLines:[
-      {mood:"excited", line:"¡Oh cielos! ¡Acabo de conocerte y YA TE QUIERO! Soy Dug, el científico más fiel del universo. ¡Escúchame bien!"},
-      {mood:"explain", line:"Una DISOLUCIÓN es una mezcla homogénea. El SOLUTO se disuelve en el DISOLVENTE. ¡Fácil como buscar mi pelota!"},
-      {mood:"explain", line:"Los ELECTROLITOS conducen electricidad en agua. Los FUERTES se ionizan 100%: HCl, HNO3, NaOH, KCl, H2SO4. ¡MEMORIZA ESOS 5!"},
-      {mood:"secret",  line:"⭐ SECRETO: Los DÉBILES solo se ionizan un poquito: CH3COOH (vinagre), NH3, HF. Y azúcar / alcohol = NO electrolitos. ¡El Michi siempre mezcla esto!"},
-    ],
-    michiTaunt:"¡Miau-ajajaja! ¡Electrolitos! ¡Mi trampa número uno! ¡Ningún cachorro ha pasado esta puerta!",
-    challenge:{
-      type:"multi",
-      question:"¿Cuál de estas sustancias es un ELECTROLITO FUERTE?",
-      options:[
-        {t:"C12H22O11 (sacarosa)", ok:false, fb:"¡El azúcar NO conduce electricidad! No electrolito. ¡Trampa del Michi!"},
-        {t:"HNO3 (ácido nítrico)", ok:true,  fb:"¡CORRECTO! HNO3 se ioniza al 100%. ¡ELECTROLITO FUERTE de libro!"},
-        {t:"CH3COOH (ácido acético)", ok:false, fb:"Vinagre = electrolito DÉBIL. Solo se ioniza parcialmente. ¡Caíste!"},
-        {t:"C2H5OH (etanol)", ok:false, fb:"El alcohol no se ioniza. ¡NO electrolito! ¡El Michi te confundió!"},
-      ]
-    },
-    michiShock:"¡¡Imposible!! ¡¡Un perrito que distingue electrolitos!! ¡¡Mi monóculo se cayó del susto!!"
-  },
-  {
-    id:2, doorLabel:"PRECIPI\nTACIÓN", color:"#7c3aed", bg:"bg-city",
-    landscape:"🌆 Ciudad en Llamas",
-    dugLines:[
-      {mood:"excited", line:"¡Segunda puerta! ¡Las ciudades arden pero tú y yo podemos salvarlas! ¡Te lo juro por mi cola!"},
-      {mood:"explain", line:"Una REACCIÓN DE PRECIPITACIÓN ocurre cuando dos soluciones forman un SÓLIDO INSOLUBLE llamado precipitado (↓). ¡El sólido cae al fondo!"},
-      {mood:"explain", line:"Escribimos 3 ecuaciones: MOLECULAR (todo completo), IÓNICA (mostramos iones) e IÓNICA NETA (borramos los iones espectadores)."},
-      {mood:"secret",  line:"⭐ SECRETO: Los IONES ESPECTADORES no reaccionan, aparecen iguales en ambos lados. ¡Los cancelamos! Precipitados comunes: AgCl↓, BaSO4↓, PbI2↓"},
-    ],
-    michiTaunt:"¡Miau-ajajaja! ¡Ecuaciones iónicas! ¡Esto confunde incluso a los profesores! ¡Ríndate, cachorro!",
-    challenge:{
-      type:"classify",
-      question:"En: Pb(NO3)2 + 2KI → PbI2↓ + 2KNO3\nClasifica cada ion:",
-      items:[
-        {t:"Pb2+", ans:"precipitado"},
-        {t:"NO3-", ans:"espectador"},
-        {t:"K+",   ans:"espectador"},
-        {t:"I-",   ans:"precipitado"},
-      ],
-      cats:["espectador","precipitado"],
-      catLabels:{espectador:"👻 Ion Espectador", precipitado:"💎 Forma Precipitado"}
-    },
-    michiShock:"¡¡Los iones espectadores!! ¡¡Un perro con gafas que sabe química!! ¡¡Esto es inaceptable!!"
-  },
-  {
-    id:3, doorLabel:"ÁCIDOS\nY BASES", color:"#f59e0b", bg:"bg-jungle",
-    landscape:"🌿 Jungla Tóxica",
-    dugLines:[
-      {mood:"excited", line:"¡JUNGLA! ¡Me encantan los olores nuevos! Pero primero te enseño Brønsted, ¡porque eso sí que es épico!"},
-      {mood:"explain", line:"Un ÁCIDO DE BRØNSTED dona protones H+. Una BASE DE BRØNSTED acepta protones H+. ¡Como compartir un hueso pero con protones!"},
-      {mood:"explain", line:"ÁCIDOS FUERTES — solo 6: HCl, HBr, HI, HNO3, H2SO4, HClO4. ¡Se ionizan 100%! Todo lo demás es DÉBIL. ¡Cuéntalos con los dedos!"},
-      {mood:"secret",  line:"⭐ TRAMPA MICHI: NH3 es BASE DÉBIL (acepta H+), NO es ácido. Ba(OH)2 es base FUERTE. HF es ácido DÉBIL aunque el Michi diga que es fuerte. ¡No caigas!"},
-    ],
-    michiTaunt:"¡Miau-ajajaja! ¿Ácidos de Brønsted? ¡Hasta mis bigotes son más inteligentes que tú, perrito!",
-    challenge:{
-      type:"multi",
-      question:"Según Brønsted, NH3 en agua actúa como:",
-      options:[
-        {t:"Ácido fuerte (dona H+)", ok:false, fb:"¡TRAMPA del Michi! NH3 ACEPTA protones → es BASE, no ácido."},
-        {t:"Base débil (acepta H+)", ok:true,  fb:"¡EXACTO! NH3 + H2O ⇌ NH4+ + OH-. Solo parcialmente. ¡BASE DÉBIL!"},
-        {t:"No electrolito", ok:false, fb:"¡NH3 sí conduce algo! Es electrolito débil, no neutro."},
-        {t:"Ácido diprótico", ok:false, fb:"¡NH3 no dona protones! El Michi te quería confundir con 'diprótico'."},
-      ]
-    },
-    michiShock:"¡¡Sabías lo del NH3!! ¡¡Mi plan de confusión ácido-base ha FALLADO!! ¡¡MIAU DE RABIA!!"
-  },
-  {
-    id:4, doorLabel:"REDOX", color:"#dc2626", bg:"bg-space",
-    landscape:"🚀 Base Espacial",
-    dugLines:[
-      {mood:"excited", line:"¡BASE ESPACIAL! ¡Puedo oler la gravedad cero! ¡Pero huelo más aún la victoria! ¡Escúchame, cadete!"},
-      {mood:"explain", line:"Las reacciones REDOX implican TRANSFERENCIA DE ELECTRONES. Dos cosas pasan al mismo tiempo: OXIDACIÓN y REDUCCIÓN. ¡Como yo corriendo por dos pelotas a la vez!"},
-      {mood:"explain", line:"OXIDACIÓN: el elemento PIERDE electrones → se llama AGENTE REDUCTOR. Sí, ¡al revés! El que pierde es el reductor porque reduce al otro."},
-      {mood:"secret",  line:"⭐ CLAVE MÁGICA — OIL RIG: Oxidation Is Loss, Reduction Is Gain. ¡El AGENTE OXIDANTE gana electrones y se REDUCE! ¡Esta frase vale 10 puntos seguros en el examen!"},
-    ],
-    michiTaunt:"¡Miau-ajajaja! ¿Redox? ¡CONFUNDE A TODOS CON EL OXIDANTE Y EL REDUCTOR! ¡Es mi trampa favorita, miau!",
-    challenge:{
-      type:"redox",
-      question:"En la reacción: Zn + CuSO4 → ZnSO4 + Cu\nAsigna el rol de cada especie:",
-      items:[
-        {t:"Zn",   role:"reductor"},
-        {t:"Cu2+", role:"oxidante"},
-      ],
-      roles:["oxidante","reductor"],
-      roleLabels:{oxidante:"🔴 Agente Oxidante (GANA e-)", reductor:"🔵 Agente Reductor (PIERDE e-)"}
-    },
-    michiShock:"¡¡OIL RIG!! ¡¡El perro con gafas conoce OIL RIG!! ¡¡Esto es un DESASTRE CÓSMICO para mi plan!!"
-  },
-  {
-    id:5, doorLabel:"MOLARIDAD\nFINAL", color:"#16a34a", bg:"bg-volcano",
-    landscape:"🌋 Reactor Volcánico — ÚLTIMA PUERTA",
-    dugLines:[
-      {mood:"excited", line:"¡ÚLTIMA PUERTA CADETE! ¡La bomba está en el reactor volcánico! ¡Yo creo en ti con todo mi corazón perruno!"},
-      {mood:"explain", line:"La MOLARIDAD (M) = moles de soluto / litros de solución. Fórmula: M = n / V. ¡El V siempre en LITROS! Si te dan mL, divide entre 1000."},
-      {mood:"explain", line:"Para NEUTRALIZACIONES: M_ácido × V_ácido = M_base × V_base. ¡Esta ecuación es la REINA! Despeja lo que te pidan."},
-      {mood:"secret",  line:"⭐ EJEMPLO REAL: 15 mL de HCl 0.500 M neutralizan 20 mL de NaOH. → M_NaOH = (0.500 × 0.015) / 0.020 = 0.375 M. ¡MEMORIZA ESTE PROCESO!"},
-    ],
-    michiTaunt:"¡Miau-ajajaja! ¡MOLARIDAD! ¡El 90% de los cachorros falla aquí! ¡Yo ya gané, MIAU-AJAJAJA!",
-    challenge:{
-      type:"numeric",
-      question:"15 mL de HCl 0.500 M neutralizan completamente 20 mL de NaOH.\n¿Cuál es la Molaridad del NaOH?",
-      answer:0.375, tolerance:0.01, unit:"M",
-      hint:"M(HCl) × V(HCl) = M(NaOH) × V(NaOH)\n→ 0.500 × 0.015 = M(NaOH) × 0.020\n→ M(NaOH) = 0.00750 / 0.020"
-    },
-    michiShock:"¡¡¡0.375 M!!! ¡¡¡NOOOOOOO!!! ¡¡¡LA ÚLTIMA PUERTA SE ABRIÓ!!! ¡¡¡MI PLAN MIAU-GISTRAL HA COLAPSADO!!!"
-  }
-];
-
-/* ════════════════════════════════════════════════════════════════
-   CHALLENGE RENDERERS
-════════════════════════════════════════════════════════════════ */
-const MultiChallenge = ({ ch, onResult }) => {
-  const [sel, setSel] = useState(null); const [locked, setLocked] = useState(false);
-  const choose = i => {
-    if (locked) return;
-    setSel(i); setLocked(true);
-    setTimeout(()=>onResult(ch.options[i].ok, ch.options[i].fb), 800);
-  };
-  return (
-    <div className="w-full max-w-md space-y-3">
-      {ch.options.map((o,i)=>{
-        let cls="btn-option";
-        if(locked && i===sel) cls+=o.ok?" correct":" wrong";
-        if(locked && o.ok && i!==sel) cls+=" correct";
-        return (
-          <button key={i} onClick={()=>choose(i)} disabled={locked}
-            className={`${cls} w-full px-4 py-3.5 rounded-xl text-left font-bold text-white text-sm`}>
-            <Sci t={o.t}/>
-          </button>
-        );
-      })}
-    </div>
-  );
-};
-
-const ClassifyChallenge = ({ ch, onResult }) => {
-  const [places, setPlaces] = useState({}); const [sel, setSel] = useState(null); const [checked, setChecked] = useState(false);
-  const unplaced = ch.items.filter(it=>!places[it.t]);
-  const place = cat=>{ if(!sel||checked) return; setPlaces(p=>({...p,[sel]:cat})); setSel(null); };
-  const remove = t=>{ if(checked) return; setPlaces(p=>{const n={...p}; delete n[t]; return n;}); };
-  const check = ()=>{
-    setChecked(true);
-    const ok = ch.items.every(it=>places[it.t]===it.ans);
-    setTimeout(()=>onResult(ok, ok?"¡Clasificación perfecta!":"¡Algún ion está mal ubicado!"), 1200);
-  };
-  return (
-    <div className="w-full max-w-md space-y-3">
-      <div className="p-3 rounded-xl border-2 border-indigo-700 bg-indigo-950/70 min-h-14">
-        <p className="text-xs text-indigo-400 bangers mb-2">⚗️ IONES SIN CLASIFICAR:</p>
-        <div className="flex flex-wrap gap-2">
-          {unplaced.map(it=>(
-            <button key={it.t} onClick={()=>setSel(it.t)}
-              className={`item-chip text-white border-2 ${sel===it.t?"active border-yellow-400 bg-yellow-500/30":"border-slate-500 bg-slate-700 hover:border-cyan-400"}`}>
-              <Sci t={it.t}/>
-            </button>
-          ))}
-          {unplaced.length===0 && <span className="text-slate-400 text-sm italic">✅ Todos ubicados</span>}
+    <div class="container" id="mainContainer">
+        <div class="heart-container" id="heartContainer">
+            <div class="heart"></div>
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        {ch.cats.map(cat=>(
-          <div key={cat} onClick={()=>place(cat)}
-            className={`min-h-24 p-3 rounded-xl border-2 cursor-pointer transition-all
-              ${sel?"border-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20":"border-slate-600 bg-slate-800/50"}`}>
-            <p className="text-xs bangers text-cyan-300 mb-2">{ch.catLabels[cat]}</p>
-            <div className="flex flex-wrap gap-1.5">
-              {ch.items.filter(it=>places[it.t]===cat).map(it=>{
-                const ok=checked&&it.ans===cat; const wrong=checked&&it.ans!==cat;
-                return (
-                  <button key={it.t} onClick={e=>{e.stopPropagation();remove(it.t);}}
-                    className={`item-chip text-white border-2 text-xs
-                      ${ok?"border-green-400 bg-green-500/30":wrong?"border-red-400 bg-red-500/30":"border-violet-400 bg-violet-500/20 hover:border-red-400"}`}>
-                    <Sci t={it.t}/>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
-      {!checked && unplaced.length===0 && (
-        <button onClick={check} className="btn-go w-full py-3.5 rounded-xl bangers text-xl text-white">
-          🔓 ¡VERIFICAR!
-        </button>
-      )}
-      {!checked && unplaced.length>0 && <p className="text-center text-slate-400 text-xs">Toca un ion → toca la categoría. Toca uno ubicado para devolverlo.</p>}
+        <div class="start-text">👆 ¡Intenta atrapar el corazón! 💕</div>
     </div>
-  );
-};
 
-const RedoxChallenge = ({ ch, onResult }) => {
-  const [asn, setAsn] = useState({}); const [selItem, setSelItem] = useState(null); const [checked, setChecked] = useState(false);
-  const assign = role=>{ if(!selItem||checked) return; setAsn(p=>({...p,[selItem]:role})); setSelItem(null); };
-  const check = ()=>{
-    setChecked(true);
-    const ok = ch.items.every(it=>asn[it.t]===it.role);
-    setTimeout(()=>onResult(ok, ok?"¡Agentes perfectamente identificados!":"¡Confundiste oxidante y reductor! OIL RIG!"), 1200);
-  };
-  return (
-    <div className="w-full max-w-md space-y-4">
-      <div className="flex gap-3 justify-center">
-        {ch.items.map(it=>(
-          <button key={it.t} onClick={()=>!checked&&setSelItem(it.t)}
-            className={`px-6 py-4 rounded-xl font-black text-xl border-2 transition-all
-              ${selItem===it.t?"border-yellow-400 bg-yellow-400/30 text-yellow-200 scale-110":"border-slate-500 bg-slate-700 text-white hover:border-cyan-400"}`}>
-            <Sci t={it.t}/>
-          </button>
-        ))}
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        {ch.roles.map(role=>(
-          <div key={role} onClick={()=>assign(role)}
-            className={`min-h-24 p-4 rounded-xl border-2 cursor-pointer transition-all flex flex-col items-center justify-center gap-2
-              ${selItem?"border-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20":"border-slate-600 bg-slate-800/50"}`}>
-            <p className="bangers text-sm text-center" style={{color:role==="oxidante"?"#f87171":"#60a5fa"}}>{ch.roleLabels[role]}</p>
-            {Object.entries(asn).filter(([,r])=>r===role).map(([t])=>{
-              const item=ch.items.find(i=>i.t===t);
-              const ok=checked&&item.role===role; const wrong=checked&&item.role!==role;
-              return (
-                <div key={t} className={`item-chip text-white border-2 ${ok?"border-green-400 bg-green-500/30":wrong?"border-red-400 bg-red-500/30":"border-violet-400 bg-violet-500/20"}`}>
-                  <Sci t={t}/>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-      {!checked && Object.keys(asn).length===ch.items.length && (
-        <button onClick={check} className="btn-go w-full py-3.5 rounded-xl bangers text-xl text-white">⚡ ¡CONFIRMAR!</button>
-      )}
-      {!checked && Object.keys(asn).length<ch.items.length && <p className="text-center text-slate-400 text-xs">Selecciona un elemento, luego su rol.</p>}
+    <div class="zoom-sequence" id="zoomSequence">
+        <div class="heart zoom-heart"></div>
     </div>
-  );
-};
 
-const NumericChallenge = ({ ch, onResult }) => {
-  const [val, setVal] = useState(""); const [hint, setHint] = useState(false); const [locked, setLocked] = useState(false); const [state, setState] = useState("");
-  const submit = ()=>{
-    if(locked) return;
-    const n=parseFloat(val);
-    const ok=!isNaN(n)&&Math.abs(n-ch.answer)<=ch.tolerance;
-    setState(ok?"correct":"wrong"); setLocked(true);
-    setTimeout(()=>onResult(ok, ok?`¡${ch.answer} ${ch.unit}! ¡PERFECTO!`:`Era ${ch.answer} ${ch.unit}. Usa M₁V₁=M₂V₂`), 700);
-  };
-  return (
-    <div className="w-full max-w-xs space-y-4">
-      <div className="flex items-center gap-3 justify-center flex-wrap">
-        <span className="text-slate-300 text-sm">M(NaOH) =</span>
-        <input type="number" step="0.001" value={val} onChange={e=>!locked&&setVal(e.target.value)}
-          onKeyDown={e=>e.key==="Enter"&&submit()}
-          className={`sci-input ${state}`} placeholder="0.000"/>
-        <span className="text-slate-300 text-sm">{ch.unit}</span>
-      </div>
-      <button onClick={submit} disabled={!val||locked}
-        className="btn-go w-full py-3 rounded-xl bangers text-xl text-white disabled:opacity-50">
-        🔢 CALCULAR Y CONFIRMAR
-      </button>
-      <button onClick={()=>setHint(h=>!h)}
-        className="w-full py-2 rounded-xl text-yellow-400 border border-yellow-800 bg-yellow-900/20 hover:bg-yellow-900/40 text-sm">
-        {hint?"▼ Ocultar pista":"▶ Pista de Dug (solo si de verdad la necesitas)"}
-      </button>
-      {hint && <div className="p-3 rounded-xl border border-yellow-700 bg-yellow-900/20">
-        <p className="text-yellow-200 text-sm whitespace-pre-line">🐕 {ch.hint}</p>
-      </div>}
+    <div class="message-container" id="messageContainer">
+        <div class="message">
+            ¡FELIZ DÍA A LA MUJER MÁS BELLA!<br>
+            💖 FELIZ DÍA SOFIIIII 💖
+        </div>
+        <div class="subtitle">
+            ¡Eres increíble! 🌟✨
+        </div>
+        <button class="next-button" id="playGameBtn">🎮 ¡Comenzar Aventura! 🎮</button>
+        <div class="cat-container">
+            <img class="cat-gif" src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="Gatito feliz">
+            <img class="cat-gif spinning-cat" src="https://media.tenor.com/EFDwfjT2GuQAAAAM/spinning-cat.gif" alt="Gatito girando">
+            <img class="cat-gif" src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Gatito bailando">
+            <img class="cat-gif" id="secretBtn" src="https://media.tenor.com/exRZ3es-yb8AAAAM/maxwell-maxwell-cat.gif" alt="Maxwell Cat" style="cursor: pointer; transition: all 0.3s ease;">
+        </div>
     </div>
-  );
-};
 
-/* ════════════════════════════════════════════════════════════════
-   MAIN APP
-════════════════════════════════════════════════════════════════ */
-function App() {
-  useEffect(()=>{
-    const el=document.createElement("style"); el.textContent=CSS;
-    document.head.appendChild(el); return ()=>document.head.removeChild(el);
-  },[]);
+    <div class="game-container" id="gameContainer">
+        <div class="game-title" id="gameTitle">🎮 ¿Preparada para el RETO FINAL? 🎮</div>
+        <div class="game-content" id="gameContent">
+            <button class="next-button" id="siBtn">✅ SÍ</button>
+            <button class="next-button" id="noBtn">❌ NO</button>
+        </div>
+        <button class="next-button" id="backToMessageBtn">💖 Volver al Mensaje</button>
+    </div>
 
-  // PHASE machine: "splash"|"intro"|"teach"|"michi-taunt"|"challenge"|"success"|"fail"|"death"|"victory"
-  const [phase, setPhase]       = useState("splash");
-  const [lvIdx, setLvIdx]       = useState(0);
-  const [scriptLine, setScriptLine] = useState(0);
-  const [lives, setLives]       = useState(3);
-  const [score, setScore]       = useState(0);
-  const [bombTime, setBombTime] = useState(5);
-  const [doorOpen, setDoorOpen] = useState(false);
-  const [fx, setFx]             = useState(null); // "red"|"green"|"shake"
-  const [michiMood, setMichiMood] = useState("normal");
-  const [michiAnim, setMichiAnim] = useState("slide-r");
-  const [dugMood, setDugMood]   = useState("excited");
-  const [dugAnim, setDugAnim]   = useState("slide-l");
-  const [michiOn, setMichiOn]   = useState(false);
-  const [dugOn, setDugOn]       = useState(false);
-  const [resultMsg, setResultMsg] = useState("");
-  const [confetti, setConfetti] = useState(false);
-  const [explosion, setExplosion] = useState(false);
-  const [introStep, setIntroStep] = useState(0);
-  const [chatOpen, setChatOpen] = useState(false);
-  const [chatMsgs, setChatMsgs] = useState([]);
-  const [chatIn, setChatIn]     = useState("");
-  const [chatLoad, setChatLoad] = useState(false);
-  const chatRef = useRef(null);
-  const shakeRef = useRef(null);
+    <script>
+        const heartContainer = document.getElementById('heartContainer');
+        const mainContainer = document.getElementById('mainContainer');
+        const zoomSequence = document.getElementById('zoomSequence');
+        const messageContainer = document.getElementById('messageContainer');
+        const floatingHearts = document.getElementById('floatingHearts');
 
-  const lv = LEVELS[lvIdx];
-  const bgClass = phase==="victory"?"bg-victory":phase==="splash"||phase==="intro"?"bg-intro":lv.bg;
+        let escapeCount = 0;
+        let lastEscapeTime = 0;
+        const escapeMessages = [
+            '¡EPAAAAA! 😜',
+            '¡NO ME AGARRAS! 😝',
+            '¡JAJA CASI! 🤪',
+            '¡MUY LENTA! 😆',
+            '¡INTÉNTALO DE NUEVO! 😏',
+            '¡QUE RÁPIDA! 🏃‍♀️',
+            '¡CATCH ME IF YOU CAN! 💨',
+            '¡UYYYY! 😱',
+            '¡POR POCO! 😅',
+            '¡SIGUE INTENTANDO! 💪'
+        ];
 
-  useEffect(()=>{ chatRef.current?.scrollIntoView({behavior:"smooth"}); },[chatMsgs]);
+        function createFloatingHearts() {
+            const hearts = ['💖', '💕', '💗', '💓', '💝', '❤️'];
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'mini-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                floatingHearts.appendChild(heart);
 
-  const triggerFx = (type, ms=700) => { setFx(type); setTimeout(()=>setFx(null), ms); };
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
 
-  /* ── SPEAK ── */
-  const say = (text, michi=false) => speak(text, michi);
+        function createParticles(x, y) {
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.background = `hsl(${Math.random() * 60 + 300}, 100%, 70%)`;
+                
+                const angle = (Math.PI * 2 * i) / 15;
+                const velocity = 100;
+                particle.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 3000);
+            }
+        }
 
-  /* ── INTRO sequence ── */
-  // steps 0=title 1=michi_enters 2=michi_bubble1 3=michi_places_bomb 4=michi_runs 5=dog_screams 6=dug_enters 7=dug_bubble 8=start_btn
+        function createConfetti() {
+            const colors = ['#ff69b4', '#da70d6', '#ffd700', '#00ff00', '#00bfff', '#ff6347'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    messageContainer.appendChild(confetti);
 
-  /* ── FIX: Auto-advance step 3 (bomb plant — no UI element existed) ── */
-  useEffect(()=>{
-    if (phase === "intro" && introStep === 3) {
-      playBombPlant();
-      const t = setTimeout(()=> setIntroStep(4), 2200);
-      return ()=>clearTimeout(t);
-    }
-  }, [phase, introStep]);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
 
-  const INTRO_BUBBLES = [
-    {who:"michi", text:"¡Por fin... el mundo será mi caja de arena GIGANTE! ¡MIAU-AJAJAJA! ¡Nadie puede detenerme!"},
-    {who:"michi", text:"¡Con esta bomba química explotan todos los laboratorios del planeta! ¡BIP... BIP... BIP! ¡El tiempo corre, perritos!"},
-    {who:"dug",   text:"¡No llores, cadete! ¡Yo soy Dug, el perro científico más fiel del universo! ¡Yo tengo las llaves pero TÚ debes usarlas!"},
-    {who:"dug",   text:"Hay 5 Puertas Blindadas. Yo te enseño cada código... y luego tú lo abres. ¿Estás listo para salvar el mundo? ¡Yo creo en ti!"},
-  ];
+        function showEscapeText(x, y, message) {
+            const escapeText = document.createElement('div');
+            escapeText.className = 'escape-text';
+            escapeText.textContent = message;
+            escapeText.style.left = x + 'px';
+            escapeText.style.top = y + 'px';
+            document.body.appendChild(escapeText);
+            setTimeout(() => escapeText.remove(), 1000);
+        }
 
-  const advIntro = useCallback(() => {
-    setIntroStep(s => {
-      const n = s + 1;
-      if (n === 1) { setMichiOn(true); setMichiMood("normal"); setMichiAnim("slide-r"); playSFX.whoosh(); say("¡Miau ajajaja! ¡El mundo será mío!", true); }
-      if (n === 3) { setMichiMood("laugh"); say("¡BIP BIP BIP! ¡La bomba está puesta! ¡MIAU AJAJAJA!", true); }
-      if (n === 4) { setMichiMood("normal"); setMichiAnim("run-r"); playSFX.whoosh(); setTimeout(()=>setMichiOn(false), 1000); speak("¡Que explote todo! ¡MIAU!", true); }
-      if (n === 6) { setDugOn(true); setDugMood("excited"); setDugAnim("slide-l"); playSFX.whoosh(); }
-      if (n >= 9) { playSFX.missionStart(); setPhase("teach"); setScriptLine(0); setDugMood("excited"); setMichiOn(false); return 9; }
-      return n;
-    });
-  }, []);
+        function escapeHeart() {
+            const now = Date.now();
+            if (now - lastEscapeTime < 500) return;
+            lastEscapeTime = now;
 
-  /* ── TEACH ── */
-  const advTeach = () => {
-    const next = scriptLine + 1;
-    if (next >= lv.dugLines.length) {
-      setDugAnim("slide-out-l"); playSFX.whoosh();
-      setTimeout(()=>{
-        setDugOn(false);
-        setMichiOn(true); setMichiMood("laugh"); setMichiAnim("slide-r");
-        playSFX.whoosh();
-        setPhase("michi-taunt");
-      }, 500);
-    } else {
-      setScriptLine(next);
-      setDugMood(lv.dugLines[next].mood);
-      say(lv.dugLines[next].line);
-    }
-  };
+            escapeCount++;
+            const maxX = window.innerWidth - 250;
+            const maxY = window.innerHeight - 250;
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
 
-  useEffect(()=>{
-    if (phase==="teach") say(lv.dugLines[0].line);
-  }, [phase, lvIdx]);
+            heartContainer.classList.add('catch-me');
+            setTimeout(() => heartContainer.classList.remove('catch-me'), 500);
 
-  const advMichiTaunt = () => {
-    setMichiAnim("slide-out-r");
-    setTimeout(()=>{ setMichiOn(false); setPhase("challenge"); }, 450);
-  };
+            heartContainer.style.transition = 'all 0.3s ease-out';
+            heartContainer.style.left = newX + 'px';
+            heartContainer.style.top = newY + 'px';
 
-  /* ── CHALLENGE RESULT ── */
-  const handleResult = (correct, fb) => {
-    setResultMsg(fb);
-    if (correct) {
-      triggerFx("green", 900);
-      playSFX.success(); playSFX.doorOpen();
-      setDoorOpen(true);
-      setScore(s => s + 100);
-      setMichiOn(true); setMichiMood("shocked"); setMichiAnim("slide-r");
-      playSFX.whoosh();
-      speak(lv.michiShock, true);
-      setConfetti(true); setTimeout(()=>setConfetti(false), 4500);
-      setPhase("success");
-    } else {
-      triggerFx("shake", 700);
-      triggerFx("red", 700);
-      playSFX.fail(); playSFX.whoosh();
-      const newLives = lives - 1;
-      setLives(newLives);
-      setBombTime(t => Math.max(t - 1, 1));
-      setMichiOn(true); setMichiMood("laugh"); setMichiAnim("slide-r");
-      speak("¡Miau ajajaja! ¡Fallaste!", true);
-      if (newLives <= 0) {
-        setExplosion(true); playSFX.explosion();
-        setTimeout(()=>{ setExplosion(false); setPhase("death"); }, 1500);
-      } else {
-        setPhase("fail");
-      }
-    }
-  };
+            const message = escapeMessages[Math.floor(Math.random() * escapeMessages.length)];
+            showEscapeText(newX + 100, newY + 100, message);
 
-  const nextLevel = () => {
-    const next = lvIdx + 1;
-    setMichiAnim("slide-out-r"); setMichiOn(false);
-    setDoorOpen(false);
-    if (next >= LEVELS.length) {
-      setTimeout(()=>setPhase("victory"), 500);
-    } else {
-      setTimeout(()=>{
-        setLvIdx(next); setScriptLine(0);
-        setDugOn(true); setDugMood("excited"); setDugAnim("slide-l");
-        setPhase("teach");
-      }, 500);
-    }
-  };
+            createParticles(newX + 100, newY + 100);
+        }
 
-  const retryChallenge = () => {
-    setMichiAnim("slide-out-r");
-    setTimeout(()=>{ setMichiOn(false); setPhase("challenge"); }, 400);
-  };
-
-  const resetGame = () => {
-    setPhase("splash"); setLvIdx(0); setLives(3); setScore(0);
-    setBombTime(5); setDoorOpen(false); setMichiOn(false); setDugOn(false);
-    setIntroStep(0); setScriptLine(0);
-  };
-
-  /* ── BOMB TICK sound during challenge ── */
-  useEffect(()=>{
-    if (phase !== "challenge" && phase !== "fail") return;
-    const interval = phase==="fail" ? 350 : 1100;
-    const t = setInterval(()=>{ phase==="fail" ? playSFX.fastTick() : playSFX.tick(); }, interval);
-    return ()=>clearInterval(t);
-  },[phase]);
-
-  /* ── CHAT ── */
-  useEffect(()=>{ chatRef.current?.scrollIntoView({behavior:"smooth"}); },[chatMsgs]);
-  const sendChat = async () => {
-    if (!chatIn.trim() || chatLoad) return;
-    const msg = chatIn.trim(); setChatIn("");
-    setChatMsgs(p=>[...p,{role:"user",content:msg}]); setChatLoad(true);
-    const sys = `Eres Dug, el Golden Retriever científico héroe. Hablas con entusiasmo perruno (¡guau!, ¡acabo de conocerte y ya te quiero!) pero con rigor científico total.
-Estudiante en Nivel ${lvIdx+1}: "${lv.doorLabel}". Explica química de disoluciones acuosas con pasos claros y analogías con perros. Nunca menciones "PDF" o "archivo". Máximo 120 palabras.`;
-    const history=[...chatMsgs,{role:"user",content:msg}].map(m=>({role:m.role,content:m.content}));
-    let delay=1000;
-    for(let i=0;i<4;i++){
-      try{
-        const r=await fetch("https://api.anthropic.com/v1/messages",{
-          method:"POST",headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:history})
+        heartContainer.addEventListener('mouseenter', () => {
+            if (escapeCount < 8) {
+                escapeHeart();
+            }
         });
-        const d=await r.json();
-        const rep=d.content?.map(b=>b.text||"").join("")||"¡Arf! Error. Intenta de nuevo.";
-        setChatMsgs(p=>[...p,{role:"assistant",content:rep}]);
-        speak(rep, false);
-        break;
-      }catch{
-        if(i<3){await new Promise(res=>setTimeout(res,delay));delay*=2;}
-        else setChatMsgs(p=>[...p,{role:"assistant",content:"¡Arf! El Michi saboteó mi señal. ¡Inténtalo otra vez!"}]);
-      }
-    }
-    setChatLoad(false);
-  };
 
-  /* ════ RENDER ════ */
-  return (
-    <div className={`relative min-h-screen overflow-hidden ${bgClass} scanlines transition-colors duration-700`}
-      style={{animation: fx==="shake"?"shake .55s ease":"none"}}>
+        heartContainer.addEventListener('click', (e) => {
+            if (escapeCount < 8) {
+                escapeCount++;
+                heartContainer.classList.add('shake');
+                setTimeout(() => heartContainer.classList.remove('shake'), 500);
+                escapeHeart();
+                return;
+            }
 
-      {/* Screen flashes */}
-      {fx==="red" && <div className="fixed inset-0 pointer-events-none" style={{zIndex:200,animation:"redFlash .7s ease"}}/>}
-      {fx==="green" && <div className="fixed inset-0 pointer-events-none" style={{zIndex:200,animation:"greenFlash .7s ease"}}/>}
-      {confetti && <Confetti/>}
-      {explosion && <Explosion/>}
+            createParticles(e.clientX, e.clientY);
+            
+            mainContainer.style.display = 'none';
+            zoomSequence.style.display = 'flex';
 
-      <Clouds/>
-      <Skyline/>
+            setTimeout(() => {
+                zoomSequence.style.display = 'none';
+                messageContainer.style.display = 'flex';
+                createConfetti();
+                
+                setTimeout(() => {
+                    createConfetti();
+                }, 2000);
+            }, 3000);
+        });
 
-      {/* ════ SPLASH ════ */}
-      {phase==="splash" && (
-        <div className="relative flex flex-col items-center justify-center min-h-screen px-4 pb-24" style={{zIndex:10}}>
-          <div className="pop-in text-center">
-            <div className="bangers text-6xl md:text-8xl neon-text text-cyan-400 leading-none">💣 QUÍMICA</div>
-            <div className="bangers text-4xl md:text-6xl text-yellow-400 drop-shadow-2xl leading-none">BAJO AMENAZA</div>
-            <div className="bangers text-2xl text-purple-300 mt-2">Perritos vs. General Michimalvado</div>
-            <div className="mt-4 flex justify-center gap-12">
-              <MichiSVG mood="normal" w={100}/>
-              <DugSVG mood="excited" w={100}/>
-            </div>
-            <div className="mt-6 text-slate-300 text-sm max-w-xs mx-auto" style={{fontFamily:"Nunito,sans-serif"}}>
-              5 puertas blindadas. 1 bomba. Solo la química puede salvar el mundo.
-            </div>
-            <button onClick={()=>{setPhase("intro");setIntroStep(0);}}
-              className="btn-danger mt-8 px-10 py-5 rounded-2xl bangers text-3xl text-white w-full max-w-xs mx-auto block">
-              🎬 ¡VER LA CINEMÁTICA!
-            </button>
-            <button onClick={()=>{setPhase("teach");setScriptLine(0);setDugOn(true);setDugMood("excited");setDugAnim("slide-l");}}
-              className="mt-3 text-slate-400 text-sm underline" style={{fontFamily:"Nunito,sans-serif"}}>
-              Saltar intro y jugar directamente ▶
-            </button>
-          </div>
-        </div>
-      )}
+        const catGifs = document.querySelectorAll('.cat-gif:not(#secretBtn)');
+        const catSounds = ['¡MIAU! 🐱', '¡PURR! 😻', '¡MEOW! 🐈', '¡MRRR! 😺'];
+        
+        catGifs.forEach(cat => {
+            let catClicks = 0;
+            
+            cat.addEventListener('click', function(e) {
+                catClicks++;
+                createParticles(e.clientX, e.clientY);
+                
+                const sound = catSounds[Math.floor(Math.random() * catSounds.length)];
+                showEscapeText(e.clientX, e.clientY, sound);
+                
+                if (catClicks % 3 === 0) {
+                    this.style.transform = 'scale(2) rotate(720deg)';
+                    createConfetti();
+                } else {
+                    this.style.transform = 'scale(1.5) rotate(360deg)';
+                }
+                
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 500);
+            });
 
-      {/* ════ INTRO CINEMATIC ════ */}
-      {phase==="intro" && (
-        <div className="relative flex flex-col items-center min-h-screen pt-6 pb-32 px-4" style={{zIndex:10}}>
-          {/* Characters */}
-          <div className="w-full max-w-lg relative flex items-end justify-between" style={{minHeight:220}}>
-            {michiOn && (
-              <div className={`absolute right-0 bottom-0 ${michiAnim}`}>
-                <MichiSVG mood={michiMood} w={130} anim={michiMood==="laugh"?"wiggle":michiMood==="running"?"run-r":"float"}/>
-              </div>
-            )}
-            {dugOn && (
-              <div className={`absolute left-0 bottom-0 ${dugAnim}`}>
-                <DugSVG mood={dugMood} w={130} anim="float"/>
-              </div>
-            )}
-            {/* Bomb center */}
-            {introStep>=3 && <div className="absolute left-1/2 -translate-x-1/2 bottom-4 pop-in"><Bomb time={bombTime}/></div>}
-          </div>
+            cat.addEventListener('mouseenter', function() {
+                this.style.filter = 'brightness(1.2) saturate(1.5)';
+            });
 
-          {/* Step 3: bomb plant - auto-advances via useEffect */}
-          {introStep===3 && (
-            <div className="mt-8 text-center pop-in">
-              <div className="bangers text-4xl text-orange-400">💣 ¡LA BOMBA ESTÁ PLANTADA!</div>
-              <div className="bangers text-2xl text-red-300 mt-2 wiggle">¡BIP... BIP... BIP!</div>
-              <div className="text-slate-400 text-xs mt-4" style={{fontFamily:"Nunito,sans-serif"}}>preparando siguiente escena...</div>
-            </div>
-          )}
+            cat.addEventListener('mouseleave', function() {
+                this.style.filter = '';
+            });
+        });
 
-          {/* Intro step 0: title */}
-          {introStep===0 && (
-            <div className="mt-8 text-center pop-in">
-              <div className="bangers text-5xl text-red-400">🎬 CINEMÁTICA DE APERTURA</div>
-              <div className="bangers text-xl text-slate-300 mt-2">El General Michimalvado ha plantado la BOMBA</div>
-              <button onClick={advIntro} className="btn-danger mt-6 px-10 py-4 rounded-2xl bangers text-2xl text-white">▶ ¡INICIAR!</button>
-            </div>
-          )}
+        createFloatingHearts();
 
-          {/* Speech bubbles */}
-          {introStep===1 && (
-            <div className="absolute right-4 top-4 z-30 max-w-xs">
-              <Bubble speaker="😼 GENERAL MICHIMALVADO" text={INTRO_BUBBLES[0].text} side="right" color="#fce7f3" border="#ec4899" onDone={advIntro}/>
-            </div>
-          )}
-          {introStep===2 && (
-            <div className="absolute right-4 top-4 z-30 max-w-xs">
-              <Bubble speaker="😼 MICHIMALVADO" text={INTRO_BUBBLES[1].text} side="right" color="#fce7f3" border="#ec4899" onDone={advIntro}/>
-            </div>
-          )}
-          {introStep===4 && (
-            <div className="mt-4 text-center pop-in">
-              <div className="bangers text-3xl text-yellow-300">🐶🐶🐶 ¡GUAU! ¡SÁLVANOS! ¡EL MUNDO VA A EXPLOTAR! 🐶🐶🐶</div>
-              <div className="text-5xl mt-2" style={{animation:"floatY 0.4s ease-in-out infinite"}}>😱😱😱</div>
-              <button onClick={advIntro} className="btn-danger mt-4 px-8 py-3 rounded-xl bangers text-xl text-white">CONTINUAR ▶</button>
-            </div>
-          )}
-          {introStep===5 && (
-            <div className="mt-4 text-center pop-in">
-              <div className="bangers text-2xl text-red-300">😹 LOS GATITOS SE RÍEN EN EL FONDO 😹</div>
-              <div className="bangers text-lg text-purple-300">¡MIAU-AJAJAJA! ¡EL PLAN ES PERFECTO!</div>
-              <button onClick={advIntro} className="btn-danger mt-4 px-8 py-3 rounded-xl bangers text-xl text-white">CONTINUAR ▶</button>
-            </div>
-          )}
-          {introStep===6 && (
-            <div className="absolute left-4 top-4 z-30 max-w-xs">
-              <Bubble speaker="🐕 DUG — PERRO CIENTÍFICO" text={INTRO_BUBBLES[2].text} side="left" color="#fef9c3" border="#ca8a04" onDone={advIntro}/>
-            </div>
-          )}
-          {introStep===7 && (
-            <div className="absolute left-4 top-4 z-30 max-w-xs">
-              <Bubble speaker="🐕 DUG" text={INTRO_BUBBLES[3].text} side="left" color="#fef9c3" border="#ca8a04" onDone={advIntro}/>
-            </div>
-          )}
-          {introStep===8 && (
-            <div className="mt-6 text-center pop-in">
-              <div className="bangers text-3xl text-cyan-300 mb-4">¿Estás listo, cadete?</div>
-              <button onClick={advIntro} className="btn-go px-12 py-5 rounded-2xl bangers text-3xl text-white w-full max-w-xs mx-auto block">
-                🐾 ¡ACEPTAR MISIÓN!
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+        const playGameBtn = document.getElementById('playGameBtn');
+        const secretBtn = document.getElementById('secretBtn');
+        const gameContainer = document.getElementById('gameContainer');
 
-      {/* ════ GAME PHASES ════ */}
-      {phase!=="splash" && phase!=="intro" && phase!=="victory" && phase!=="death" && (
-        <div className="relative flex flex-col min-h-screen pb-32" style={{zIndex:10}}>
-          {/* HUD */}
-          <div className="flex items-center justify-between px-4 pt-4 pb-2 flex-wrap gap-2">
-            <Hearts lives={lives}/>
-            <div className="prog-bar w-28 md:w-40">
-              <div className="prog-fill" style={{width:`${lvIdx/5*100}%`}}/>
-            </div>
-            <div className="bangers text-yellow-400 text-lg">⭐ {score}</div>
-            <button onClick={()=>setChatOpen(o=>!o)}
-              className="px-3 py-1.5 rounded-xl border-2 border-yellow-500 bg-yellow-900/50 text-yellow-300 bangers text-sm">
-              🐾 Preguntar a Dug
-            </button>
-          </div>
-
-          {/* Level info */}
-          <div className="text-center px-4">
-            <div className="bangers text-lg text-cyan-400">{lv.landscape}</div>
-          </div>
-
-          {/* Stage */}
-          <div className="flex-1 flex flex-col items-center px-4 pt-2">
-            {/* Door + Bomb */}
-            <div className="flex items-end gap-8 md:gap-16 mb-4 justify-center">
-              <Door color={lv.color} label={lv.doorLabel} open={doorOpen}/>
-              <Bomb time={bombTime} fast={phase==="fail"}/>
-            </div>
-
-            {/* Characters */}
-            <div className="w-full max-w-lg relative flex items-end justify-between" style={{minHeight:190}}>
-              {dugOn && (
-                <div className={`absolute left-0 bottom-0 ${dugAnim}`}>
-                  <DugSVG mood={dugMood} w={120} anim={phase==="teach"?"float":"heartbeat-anim"}/>
-                </div>
-              )}
-              {michiOn && (
-                <div className={`absolute right-0 bottom-0 ${michiAnim}`}>
-                  <MichiSVG mood={michiMood} w={120} anim={michiMood==="laugh"?"wiggle":michiMood==="shocked"?"heartbeat-anim":"float"}/>
-                </div>
-              )}
-            </div>
-
-            {/* ── TEACH ── */}
-            {phase==="teach" && dugOn && (
-              <div className="absolute left-4 top-48 md:top-40 z-30 max-w-xs pop-in">
-                <Bubble key={scriptLine} speaker={`🐕 DUG — ${lv.dugLines[scriptLine].mood==="secret"?"¡SECRETO!":"LECCIÓN "+(scriptLine+1)+"/"+lv.dugLines.length}`}
-                  text={lv.dugLines[scriptLine].line} side="left" color="#fef9c3" border="#ca8a04" onDone={advTeach}/>
-              </div>
-            )}
-
-            {/* ── MICHI TAUNT ── */}
-            {phase==="michi-taunt" && michiOn && (
-              <div className="absolute right-4 top-44 z-30 max-w-xs pop-in">
-                <Bubble speaker="😼 MICHIMALVADO" text={lv.michiTaunt} side="right" color="#fce7f3" border="#ec4899" onDone={advMichiTaunt}/>
-              </div>
-            )}
-
-            {/* ── CHALLENGE ── */}
-            {phase==="challenge" && (
-              <div className="w-full max-w-md mt-2 flex flex-col items-center gap-4">
-                <div className="w-full p-4 rounded-2xl comic bg-slate-950/90">
-                  <div className="bangers text-yellow-400 text-base mb-2">🔐 DESCIFRA EL CÓDIGO:</div>
-                  <p className="text-white text-sm leading-relaxed whitespace-pre-line mb-4" style={{fontFamily:"Nunito,sans-serif"}}>
-                    <Sci t={lv.challenge.question}/>
-                  </p>
-                  {lv.challenge.type==="multi"    && <MultiChallenge    ch={lv.challenge} onResult={handleResult}/>}
-                  {lv.challenge.type==="classify" && <ClassifyChallenge ch={lv.challenge} onResult={handleResult}/>}
-                  {lv.challenge.type==="redox"    && <RedoxChallenge    ch={lv.challenge} onResult={handleResult}/>}
-                  {lv.challenge.type==="numeric"  && <NumericChallenge  ch={lv.challenge} onResult={handleResult}/>}
-                </div>
-              </div>
-            )}
-
-            {/* ── SUCCESS ── */}
-            {phase==="success" && (
-              <>
-                {michiOn && (
-                  <div className="absolute right-4 top-44 z-30 max-w-xs pop-in">
-                    <Bubble speaker="🙀 MICHIMALVADO (DERROTADO)" text={lv.michiShock} side="right" color="#fce7f3" border="#ec4899" auto onDone={()=>setMichiOn(false)}/>
-                  </div>
-                )}
-                {!michiOn && (
-                  <div className="w-full max-w-md flex flex-col items-center gap-4 mt-2 pop-in">
-                    <div className="w-full p-5 rounded-2xl comic-green bg-green-950/90 text-center">
-                      <div className="bangers text-4xl text-green-400">🐾 ¡PUERTA ABIERTA!</div>
-                      <div className="text-5xl my-2 heartbeat-anim">🎉</div>
-                      <p className="text-green-200 text-sm mb-3" style={{fontFamily:"Nunito,sans-serif"}}>{resultMsg}</p>
-                      <div className="bangers text-3xl text-yellow-400 mb-3">+100 ⭐</div>
-                      <button onClick={nextLevel}
-                        className="btn-go px-8 py-4 rounded-2xl bangers text-2xl text-white w-full">
-                        {lvIdx<LEVELS.length-1?"➡️ SIGUIENTE PUERTA":"🏆 ¡DESACTIVAR BOMBA!"}
-                      </button>
+        secretBtn.addEventListener('click', () => {
+            speak('¡Encontraste el secreto! Ahora viene el desafío final');
+            messageContainer.style.display = 'none';
+            
+            const secretContainer = document.createElement('div');
+            secretContainer.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 500;
+                padding: 20px;
+            `;
+            
+            secretContainer.innerHTML = `
+                <div style="text-align: center; max-width: 600px;">
+                    <h1 style="font-size: 3rem; color: #fbbf24; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); animation: fadeInScale 1s ease;">
+                        🔐 ¡ENCONTRASTE EL SECRETO! 🔐
+                    </h1>
+                    <p style="font-size: 1.5rem; color: white; margin-bottom: 20px;">
+                        Resuelve este acertijo para desbloquear el mensaje final:
+                    </p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; margin: 20px 0;">
+                        <p style="font-size: 1.8rem; color: #fbbf24; font-weight: bold; line-height: 1.6;">
+                            ¿Cuál es la contraseña secreta? 🔐<br><br>
+                            <span style="font-size: 1.4rem; color: white;">
+                            Pista: Es el apodo que le inventé a Sofi<br>
+                            + "klein" (todo junto, sin espacios)
+                            </span>
+                        </p>
                     </div>
-                  </div>
-                )}
-              </>
-            )}
-
-            {/* ── FAIL ── */}
-            {phase==="fail" && (
-              <>
-                {michiOn && (
-                  <div className="absolute right-4 top-44 z-30 max-w-xs pop-in">
-                    <Bubble speaker="😹 MICHI (RÍE)" text={`¡MIAU-AJAJAJA! ¡${resultMsg}! ¡La bomba hace BIP-BIP más rápido! Te quedan ${lives} ❤️`}
-                      side="right" color="#fce7f3" border="#ec4899" auto onDone={()=>setMichiOn(false)}/>
-                  </div>
-                )}
-                {!michiOn && (
-                  <div className="w-full max-w-md mt-2 pop-in">
-                    <div className="p-5 rounded-2xl comic-danger bg-red-950/90 text-center">
-                      <div className="bangers text-3xl text-red-400">💥 RESPUESTA INCORRECTA</div>
-                      <div className="text-5xl my-2 wiggle">😹</div>
-                      <p className="text-red-200 text-sm mb-3" style={{fontFamily:"Nunito,sans-serif"}}>{resultMsg}</p>
-                      <Hearts lives={lives}/>
-                      <button onClick={retryChallenge}
-                        className="btn-danger mt-4 px-8 py-4 rounded-2xl bangers text-2xl text-white w-full" style={{animation:"heartbeat 1s ease infinite"}}>
-                        🔄 REINTENTAR
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ════ DEATH ════ */}
-      {phase==="death" && (
-        <div className="relative flex flex-col items-center justify-center min-h-screen px-4 pb-24 text-center" style={{zIndex:10}}>
-          <div className="pop-in">
-            <div className="text-8xl mb-4">💣💥🌋</div>
-            <div className="bangers text-5xl text-red-400">¡LA BOMBA EXPLOTÓ!</div>
-            <div className="bangers text-2xl text-orange-400 mt-2">¡El General Michimalvado GANÓ... por ahora</div>
-            <div className="my-6 text-6xl wiggle">😼</div>
-            <p className="text-slate-300 text-sm mb-6" style={{fontFamily:"Nunito,sans-serif"}}>
-              "¡MIAU-AJAJAJA! ¡El mundo es mi caja de arena! ¡Los perritos fallaron!"
-            </p>
-            <button onClick={resetGame}
-              className="btn-danger px-10 py-5 rounded-2xl bangers text-3xl text-white">
-              🔄 INTENTAR DE NUEVO
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ════ VICTORY ════ */}
-      {phase==="victory" && (
-        <div className="relative flex flex-col items-center justify-center min-h-screen px-4 pb-24 text-center" style={{zIndex:10}}>
-          <Confetti/>
-          <div className="pop-in max-w-md w-full">
-            <div className="bangers text-7xl neon-text text-yellow-400">¡VICTORIA!</div>
-            <div className="text-5xl my-3">🐕🎉🏆🎉🐕</div>
-            <div className="bangers text-2xl text-green-300">¡LA BOMBA FUE DESACTIVADA!</div>
-            <div className="my-4">
-              <DugSVG mood="excited" w={120} anim="heartbeat-anim"/>
-            </div>
-            <div className="p-5 rounded-2xl comic-gold bg-slate-900/90 mb-5">
-              <div className="bangers text-4xl text-yellow-400">⭐ {score} PUNTOS ⭐</div>
-              <p className="text-cyan-300 bangers text-lg mt-1">¡DUG: ¡SABÍA QUE PODÍAS! ¡TE QUIERO MUCHO!</p>
-              <p className="text-purple-300 text-sm mt-2 italic" style={{fontFamily:"Nunito,sans-serif"}}>
-                😼 Michimalvado: "¡ESTO NO TERMINÓ! ¡Los perritos estudiosos son mi peor pesadilla!"
-              </p>
-              <div className="mt-3 text-slate-400 text-xs" style={{fontFamily:"Nunito,sans-serif"}}>
-                Dominaste: Electrolitos • Precipitación • Ácidos/Bases • Redox • Molaridad
-              </div>
-            </div>
-            <button onClick={resetGame}
-              className="btn-go px-10 py-5 rounded-2xl bangers text-3xl text-white w-full">
-              🔄 ¡JUGAR DE NUEVO!
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ════ DUG CHAT ════ */}
-      {chatOpen && (
-        <div className="fixed bottom-4 right-2 md:right-4 z-50 w-[calc(100vw-1rem)] max-w-xs rounded-2xl border-4 border-yellow-500 bg-slate-900 shadow-2xl flex flex-col overflow-hidden"
-          style={{height:400}}>
-          <div className="flex items-center justify-between px-3 py-2 bg-yellow-900/60 border-b border-yellow-700">
-            <div className="flex items-center gap-2">
-              <DugSVG mood="normal" w={38}/>
-              <div><p className="bangers text-yellow-400 text-sm">Dug — Tutor IA</p><p className="text-xs text-yellow-600">Nivel {lvIdx+1}</p></div>
-            </div>
-            <button onClick={()=>setChatOpen(false)} className="text-yellow-400 hover:text-white bangers text-xl">✕</button>
-          </div>
-          <div className="flex-1 overflow-y-auto p-3 space-y-2">
-            {chatMsgs.length===0 && <div className="text-center p-4"><p className="text-slate-400 text-sm" style={{fontFamily:"Nunito,sans-serif"}}>¡Hola! ¡Acabo de conocerte y ya te quiero! Pregunta lo que necesites sobre {lv.doorLabel}.</p></div>}
-            {chatMsgs.map((m,i)=>(
-              <div key={i} className={`flex ${m.role==="user"?"justify-end":"justify-start"}`}>
-                <div className={`max-w-[85%] px-3 py-2 rounded-xl text-sm ${m.role==="user"?"bg-violet-700 text-white rounded-br-none":"bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700"}`}
-                  style={{fontFamily:"Nunito,sans-serif"}}>
-                  {m.role==="assistant" && <span className="mr-1">🐶</span>}{m.content}
+                    <input type="text" id="riddleAnswer" placeholder="Tu respuesta..." style="width: 300px; padding: 15px; font-size: 1.5rem; border-radius: 10px; border: none; text-align: center; margin: 20px 0;">
+                    <br>
+                    <button class="next-button" id="checkAnswer" style="margin: 10px;">✅ Verificar</button>
+                    <button class="next-button" id="closeSecret" style="background: #dc2626;">❌ Cerrar</button>
+                    <p id="riddleHint" style="font-size: 1rem; color: #fbbf24; margin-top: 20px; min-height: 30px;"></p>
                 </div>
-              </div>
-            ))}
-            {chatLoad && <div className="flex justify-start"><div className="px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 text-sm">🐶 olfateando la respuesta<span className="animate-pulse">...</span></div></div>}
-            <div ref={chatRef}/>
-          </div>
-          <div className="p-2 border-t border-slate-800 flex gap-2">
-            <input value={chatIn} onChange={e=>setChatIn(e.target.value)} onKeyDown={e=>e.key==="Enter"&&sendChat()}
-              placeholder="Pregunta a Dug..." style={{fontFamily:"Nunito,sans-serif"}}
-              className="flex-1 px-3 py-2 rounded-xl bg-slate-800 border border-slate-600 text-white text-sm focus:outline-none focus:border-yellow-400 placeholder-slate-500"/>
-            <button onClick={sendChat} disabled={chatLoad}
-              className="px-3 py-2 rounded-xl bg-yellow-600 hover:bg-yellow-500 disabled:opacity-50 text-white bangers text-lg">➤</button>
-          </div>
-        </div>
-      )}
+            `;
+            
+            document.body.appendChild(secretContainer);
+            
+            const riddleAnswer = document.getElementById('riddleAnswer');
+            const checkAnswer = document.getElementById('checkAnswer');
+            const closeSecret = document.getElementById('closeSecret');
+            const riddleHint = document.getElementById('riddleHint');
+            
+            let attempts = 0;
+            const correctAnswer = 'sofiklein';
+            
+            checkAnswer.addEventListener('click', () => {
+                const userAnswer = riddleAnswer.value.toLowerCase().trim();
+                attempts++;
+                
+                if (userAnswer === correctAnswer) {
+                    speak('¡Correcto! Eres increíble Sofi');
+                    riddleHint.textContent = '🎉 ¡CORRECTO! 🎉';
+                    riddleHint.style.color = '#10b981';
+                    
+                    setTimeout(() => {
+                        secretContainer.innerHTML = `
+                            <div style="text-align: center; max-width: 800px; animation: fadeInScale 1s ease;">
+                                <h1 style="font-size: 3.5rem; color: #fbbf24; margin-bottom: 30px;">
+                                    💖 MENSAJE FINAL 💖
+                                </h1>
+                                <div style="background: rgba(255,255,255,0.15); padding: 40px; border-radius: 20px; backdrop-filter: blur(10px);">
+                                    <p style="font-size: 2rem; color: white; line-height: 1.8; margin-bottom: 30px;">
+                                        <strong style="color: #fbbf24;">Sofi,</strong><br><br>
+                                        Este día especial es para celebrarte a ti.<br>
+                                        Eres una persona increíble, talentosa y especial.<br>
+                                        Cada momento contigo es un regalo.<br><br>
+                                        Gracias por ser quien eres.<br>
+                                        Gracias por tu sonrisa, tu alegría y tu luz.<br><br>
+                                        <strong style="color: #fbbf24;">¡FELIZ DÍA DE LA MUJER!</strong><br>
+                                        💖✨🌟💕🎊
+                                    </p>
+                                    <img src="https://media.tenor.com/EFDwfjT2GuQAAAAM/spinning-cat.gif" style="width: 150px; height: 150px; border-radius: 50%; margin: 20px 0;">
+                                </div>
+                                <button class="next-button" onclick="location.reload()" style="margin-top: 30px;">🏠 Volver al Inicio</button>
+                            </div>
+                        `;
+                        createConfetti();
+                        setTimeout(() => createConfetti(), 1000);
+                        setTimeout(() => createConfetti(), 2000);
+                    }, 1500);
+                } else {
+                    speak('Intenta de nuevo');
+                    if (attempts === 1) {
+                        riddleHint.textContent = '💡 Pista: El apodo empieza con "sofi"...';
+                    } else if (attempts === 2) {
+                        riddleHint.textContent = '💡 Pista: "sofi" + "klein" todo junto';
+                    } else {
+                        riddleHint.textContent = '💡 Pista: sofiklein (sin espacios ni mayúsculas)';
+                    }
+                    riddleAnswer.value = '';
+                    riddleAnswer.style.border = '3px solid #dc2626';
+                    setTimeout(() => {
+                        riddleAnswer.style.border = 'none';
+                    }, 500);
+                }
+            });
+            
+            closeSecret.addEventListener('click', () => {
+                secretContainer.remove();
+                messageContainer.style.display = 'flex';
+            });
+            
+            riddleAnswer.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkAnswer.click();
+                }
+            });
+        });
+        const gameContent = document.getElementById('gameContent');
+        const gameTitle = document.getElementById('gameTitle');
+        const backToMessageBtn = document.getElementById('backToMessageBtn');
+        const siBtn = document.getElementById('siBtn');
+        const noBtn = document.getElementById('noBtn');
 
-      {/* Chat FAB */}
-      {!chatOpen && phase!=="splash" && phase!=="intro" && (
-        <button onClick={()=>setChatOpen(true)}
-          className="fixed bottom-5 right-4 z-40 w-14 h-14 rounded-full border-4 border-yellow-500 bg-yellow-600 hover:bg-yellow-500 shadow-2xl text-2xl flex items-center justify-center float">
-          🐾
-        </button>
-      )}
-    </div>
-  );
-}
+        let noEscapeCount = 0;
+        const noMessages = [
+            '¿Segura que NO? 🤔',
+            'Venga... di que SÍ 😏',
+            '¡No seas malita! 😜',
+            'Dale al SÍ pues 🥺',
+            '¡VENGA YA! 😤',
+            'El botón NO está roto 😝',
+            '¡Por favoooor! 🙏',
+            'Ya cansaste... di SÍ 😂',
+            'OK OK... pero di SÍ 💕',
+            '¡ÚLTIMA OPORTUNIDAD! ⚠️'
+        ];
 
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                utterance.rate = 1.2;
+                utterance.pitch = 1.1;
+                speechSynthesis.speak(utterance);
+            }
+        }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<App/>);
+        function playMeow() {
+            const meowSounds = ['Miau', 'Miaaau', 'Mrrr', 'Meow'];
+            const randomMeow = meowSounds[Math.floor(Math.random() * meowSounds.length)];
+            speak(randomMeow);
+        }
 
-</script>
+        playGameBtn.addEventListener('click', () => {
+            messageContainer.style.display = 'none';
+            gameContainer.style.display = 'flex';
+            speak('¿Preparada para el reto final?');
+        });
+
+        let siEscapeCount = 0;
+        let siAnimating = false;
+
+        siBtn.addEventListener('mouseenter', () => {
+            if (!siAnimating && Math.random() > 0.5) {
+                siEscapeCount++;
+                const maxX = window.innerWidth - 200;
+                const maxY = window.innerHeight - 200;
+                const newX = Math.random() * maxX;
+                const newY = Math.random() * maxY;
+
+                siBtn.style.position = 'fixed';
+                siBtn.style.transition = 'all 0.3s ease';
+                siBtn.style.left = newX + 'px';
+                siBtn.style.top = newY + 'px';
+                
+                speak('¡Jaja te escapé!');
+                showEscapeText(newX, newY, '¡TROLEADA! 😂');
+            }
+        });
+
+        let siClickCount = 0;
+        let buttonsSwapped = false;
+
+        siBtn.addEventListener('click', () => {
+            if (siAnimating) return;
+            
+            if (siClickCount === 0) {
+                siClickCount++;
+                buttonsSwapped = true;
+                
+                const siPosition = siBtn.getBoundingClientRect();
+                const noPosition = noBtn.getBoundingClientRect();
+                
+                siBtn.style.position = 'fixed';
+                siBtn.style.left = siPosition.left + 'px';
+                siBtn.style.top = siPosition.top + 'px';
+                
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = noPosition.left + 'px';
+                noBtn.style.top = noPosition.top + 'px';
+                
+                setTimeout(() => {
+                    siBtn.style.transition = 'all 0.5s ease';
+                    noBtn.style.transition = 'all 0.5s ease';
+                    
+                    siBtn.style.left = noPosition.left + 'px';
+                    siBtn.style.top = noPosition.top + 'px';
+                    
+                    noBtn.style.left = siPosition.left + 'px';
+                    noBtn.style.top = siPosition.top + 'px';
+                }, 10);
+                
+                speak('¡Jaja! ¡Dijiste que NO! Los botones se cambiaron de lugar');
+                showEscapeText(window.innerWidth / 2, window.innerHeight / 2, '¡CAMBIARON DE LUGAR! 😂');
+                
+                setTimeout(() => {
+                    siBtn.style.transition = '';
+                    noBtn.style.transition = '';
+                }, 600);
+                
+                return;
+            }
+            
+            siAnimating = true;
+
+            speak('¡Vamos allá! Momento especial iniciando');
+            
+            siBtn.style.transition = 'all 0.5s ease';
+            siBtn.style.transform = 'scale(2) rotate(720deg)';
+            
+            setTimeout(() => {
+                siBtn.innerHTML = '<img src="https://media.tenor.com/exRZ3es-yb8AAAAM/maxwell-maxwell-cat.gif" style="width: 100px; height: 100px; border-radius: 50%;">';
+                speak('¡Maxwell Cat apareció!');
+            }, 500);
+
+            setTimeout(() => {
+                gameTitle.textContent = '🎉 ¡GALERÍA DE RECUERDOS! 🎉';
+                speak('Aquí están nuestros mejores momentos juntos');
+                
+                const photos = [
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/05d85010-a855-499a-9a0c-8d9fd6f52058',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/e883cdf9-4740-4378-aca2-1996acd502ec',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/1ed65741-0891-4be1-bd8c-2380fe64378f',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/96f2464b-5d78-4f35-8c32-44b1a2606a8f',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/d4fac58a-7023-4887-9704-f3a4029070e1',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/188f10d4-0658-4cc7-8847-043cd3c64b53',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/6450ad7c-335e-438e-9a60-7da57aef2b69',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/c44971ff-71f8-439c-b146-e668480cff34',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/4fbf8e7e-a3e0-4333-bace-6dd72092fb3a',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/ad8013ee-52d2-415c-8678-a458b9c21f17',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/647e9a25-ccaa-4456-94ca-982959eb5a2a',
+                    'https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/49a91883-85b0-4b65-9825-a0c0d933c2ed'
+                ];
+                
+                let currentPhotoIndex = 0;
+                
+                gameContent.innerHTML = `
+                    <div style="width: 100%; max-width: 900px; text-align: center;">
+                        <div class="slideshow-container">
+                            <img id="currentPhoto" src="${photos[0]}" class="slideshow-image">
+                            <button id="prevPhoto" class="slideshow-button prev">◀</button>
+                            <button id="nextPhoto" class="slideshow-button next">▶</button>
+                            <div class="photo-counter">
+                                <span id="photoCounter">1 / ${photos.length}</span>
+                            </div>
+                        </div>
+                        
+                        <p style="font-size: 2rem; color: var(--color-dark-pink); font-weight: bold; margin: 30px 0; text-align: center;">
+                            💕 Cada momento contigo es especial 💕
+                        </p>
+                        
+                        <div class="hint-box">
+                            <div class="hint-title">
+                                🔐✨ ¡HAY UN BOTÓN OCULTO! ✨🔐
+                            </div>
+                            <div class="hint-text">
+                                🐱 ¡EN EL ÚLTIMO GATITO! 🐱<br>
+                                👉 ¡A LA DERECHAAAA! 👈
+                            </div>
+                            <div class="hint-detail">
+                                Vuelve a la página principal y busca a <strong>Maxwell Cat</strong> 😼<br>
+                                ¡Es el <strong>CUARTO GATO</strong>, el de la <strong>DERECHA</strong>! 🎯<br>
+                                Haz click en él para desbloquear el mensaje final 💖<br>
+                                👀🔐✨
+                            </div>
+                        </div>
+                        
+                        <button class="next-button" onclick="location.reload()" style="margin-top: 30px;">🔙 Volver al Inicio</button>
+                    </div>
+                `;
+                
+                const currentPhoto = document.getElementById('currentPhoto');
+                const photoCounter = document.getElementById('photoCounter');
+                const prevPhoto = document.getElementById('prevPhoto');
+                const nextPhoto = document.getElementById('nextPhoto');
+                
+                function updatePhoto() {
+                    currentPhoto.style.animation = 'none';
+                    setTimeout(() => {
+                        currentPhoto.src = photos[currentPhotoIndex];
+                        currentPhoto.style.animation = 'fadeIn 0.5s ease';
+                        photoCounter.textContent = `${currentPhotoIndex + 1} / ${photos.length}`;
+                    }, 50);
+                }
+                
+                prevPhoto.addEventListener('click', () => {
+                    speechSynthesis.cancel();
+                    currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+                    updatePhoto();
+                    playMeow();
+                });
+                
+                nextPhoto.addEventListener('click', () => {
+                    speechSynthesis.cancel();
+                    currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+                    updatePhoto();
+                    playMeow();
+                });
+                
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        speechSynthesis.cancel();
+                        prevPhoto.click();
+                    }
+                    if (e.key === 'ArrowRight') {
+                        speechSynthesis.cancel();
+                        nextPhoto.click();
+                    }
+                });
+                
+                setTimeout(() => {
+                    speak('¡Hay un botón secreto oculto! Busca el último gatito a la derechaaaa, es Maxwell Cat');
+                }, 2000);
+                
+                createConfetti();
+                setTimeout(() => createConfetti(), 1500);
+                setTimeout(() => createConfetti(), 3000);
+            }, 1000);
+        });
+
+        noBtn.addEventListener('click', (e) => {
+            if (siClickCount === 1 && buttonsSwapped) {
+                siClickCount++;
+                buttonsSwapped = false;
+                
+                const siPosition = siBtn.getBoundingClientRect();
+                const noPosition = noBtn.getBoundingClientRect();
+                
+                siBtn.style.transition = 'all 0.5s ease';
+                noBtn.style.transition = 'all 0.5s ease';
+                
+                siBtn.style.left = noPosition.left + 'px';
+                siBtn.style.top = noPosition.top + 'px';
+                
+                noBtn.style.left = siPosition.left + 'px';
+                noBtn.style.top = siPosition.top + 'px';
+                
+                speak('¡Bien! Ahora volvieron a su lugar normal');
+                showEscapeText(window.innerWidth / 2, window.innerHeight / 2, '¡DE VUELTA! 🔄');
+                
+                setTimeout(() => {
+                    siBtn.style.position = 'relative';
+                    siBtn.style.left = 'auto';
+                    siBtn.style.top = 'auto';
+                    siBtn.style.transition = '';
+                    
+                    noBtn.style.position = 'relative';
+                    noBtn.style.left = 'auto';
+                    noBtn.style.top = 'auto';
+                    noBtn.style.transition = '';
+                }, 600);
+                
+                return;
+            }
+            
+            noEscapeCount++;
+            
+            const maxX = window.innerWidth - 200;
+            const maxY = window.innerHeight - 200;
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.transition = 'all 0.3s ease';
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+
+            if (noEscapeCount < noMessages.length) {
+                const message = noMessages[noEscapeCount - 1];
+                gameTitle.textContent = message;
+                speak(message);
+                showEscapeText(newX + 100, newY + 50, '¡EPAAAA! 😝');
+            } else {
+                gameTitle.textContent = '😤 OK, no hay opción de NO...';
+                speak('OK, no hay opción de decir que no');
+                noBtn.style.display = 'none';
+                siBtn.textContent = '✅ LA ÚNICA OPCIÓN';
+                siBtn.style.transform = 'scale(1.5)';
+                siBtn.style.animation = 'pulse 1s ease-in-out infinite';
+            }
+
+            createParticles(e.clientX, e.clientY);
+            playMeow();
+        });
+
+        siBtn.addEventListener('mouseenter', () => {
+            speak('Dale click aquí');
+        });
+
+        noBtn.addEventListener('mouseenter', () => {
+            if (noEscapeCount < 3) {
+                speak('No me hagas escapar');
+            }
+        });
+
+        backToMessageBtn.addEventListener('click', () => {
+            gameContainer.style.display = 'none';
+            messageContainer.style.display = 'flex';
+            noEscapeCount = 0;
+            noBtn.style.position = 'relative';
+            noBtn.style.left = 'auto';
+            noBtn.style.top = 'auto';
+            noBtn.style.display = 'inline-block';
+            siBtn.textContent = '✅ SÍ';
+            siBtn.style.transform = 'scale(1)';
+            siBtn.style.animation = 'none';
+            gameTitle.textContent = '🎮 ¿Preparada para el RETO FINAL? 🎮';
+            gameContent.innerHTML = `
+                <button class="next-button" id="siBtn">✅ SÍ</button>
+                <button class="next-button" id="noBtn">❌ NO</button>
+            `;
+            location.reload();
+        });
+    </script>
 </body>
 </html>
